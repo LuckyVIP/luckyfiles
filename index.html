@@ -767,77 +767,214 @@
     </script>
 
         <!-- ==============================================================
-    ТАП-СЧЁТЧИК (только картинка + счётчик)
+    ИНВЕСТИЦИОННЫЙ ТАП-ДУЭЛЬ (2 колонки)
     ============================================================== -->
     <div style="margin-top: 4rem; padding-top: 2rem; border-top: 2px solid var(--border);">
         
-        <div style="display:flex; flex-direction:column; align-items:center; gap:0.8rem;">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem; max-width:600px; margin:0 auto;">
 
-            <!-- КАРТИНКА (кликабельная) -->
-            <div id="tapImage" style="cursor:pointer; transition:transform 0.12s ease; max-width:160px; width:100%; border-radius:20px; overflow:hidden; box-shadow: 0 8px 28px var(--shadow-hover); border: 2px solid var(--border);">
-                <img src="https://images.cryptorank.io/coins/hamster_kombat1727340368581.png" alt="Тап-картинка" style="width:100%; display:block; user-select:none; -webkit-user-drag:none;" />
+            <!-- ===== ЛЕВАЯ КОЛОНКА: НАЧЕКАНИТЬ ===== -->
+            <div style="display:flex; flex-direction:column; align-items:center; gap:0.6rem; padding:1.5rem 1rem; background:var(--bg-card); border-radius:24px; border:1px solid var(--border); box-shadow:0 8px 24px var(--shadow);">
+                
+                <div style="font-size:1.1rem; font-weight:700; color:var(--text-secondary); letter-spacing:1px;">
+                    💰 Начеканить
+                </div>
+
+                <div id="tapImageLeft" style="cursor:pointer; transition:transform 0.12s ease; max-width:110px; width:100%; border-radius:16px; overflow:hidden; border:2px solid var(--border); box-shadow: 0 4px 16px var(--shadow-hover);">
+                    <img id="leftImg" src="https://i.postimg.cc/Y0pK8C0C/Nikita-red-back.png" alt="Тап" style="width:100%; display:block; user-select:none; -webkit-user-drag:none;" />
+                </div>
+
+                <div style="text-align:center;">
+                    <span style="font-size:2rem; font-weight:800; color:var(--gradient-start);" id="tapCounterLeft">0</span>
+                    <span style="color:var(--text-muted); font-size:0.8rem; margin-left:4px;">монет</span>
+                </div>
             </div>
 
-            <!-- СЧЁТЧИК -->
-            <div style="text-align:center;">
-                <span style="font-size:2.8rem; font-weight:800; color:var(--gradient-start); letter-spacing:-1px;" id="tapCounter">0</span>
-                <span style="color:var(--text-muted); font-size:0.9rem; margin-left:6px;">нажатий</span>
+            <!-- ===== ПРАВАЯ КОЛОНКА: ИНВЕСТИЦИИ ===== -->
+            <div style="display:flex; flex-direction:column; align-items:center; gap:0.6rem; padding:1.5rem 1rem; background:var(--bg-card); border-radius:24px; border:1px solid var(--border); box-shadow:0 8px 24px var(--shadow);">
+                
+                <div style="font-size:1.1rem; font-weight:700; color:var(--text-secondary); letter-spacing:1px;">
+                    📈 Инвестиции
+                </div>
+
+                <div id="tapImageRight" style="cursor:pointer; transition:transform 0.12s ease; max-width:110px; width:100%; border-radius:16px; overflow:hidden; border:2px solid var(--border); box-shadow: 0 4px 16px var(--shadow-hover);">
+                    <img id="rightImg" src="https://i.postimg.cc/Y0pK8C0C/Nikita-red-back.png" alt="Инвест" style="width:100%; display:block; user-select:none; -webkit-user-drag:none;" />
+                </div>
+
+                <div style="text-align:center;">
+                    <span style="font-size:2rem; font-weight:800; color:#f59e0b;" id="tapCounterRight">0</span>
+                    <span style="color:var(--text-muted); font-size:0.8rem; margin-left:4px;">инвестиций</span>
+                </div>
             </div>
 
-            <!-- КНОПКА СБРОСА (маленькая, не мешает) -->
-            <button onclick="resetTap()" style="padding: 0.2rem 1rem; background: transparent; color: var(--text-muted); border: 1px solid var(--border); border-radius: 30px; font-size: 0.7rem; cursor: pointer; transition: 0.2s; font-family: inherit; opacity:0.5;">
-                <i class="fas fa-undo"></i> сброс
+        </div>
+
+        <!-- КНОПКА СБРОСА (общая, маленькая) -->
+        <div style="text-align:center; margin-top:1.5rem;">
+            <button onclick="resetAllTaps()" style="padding: 0.2rem 1.2rem; background: transparent; color: var(--text-muted); border: 1px solid var(--border); border-radius: 30px; font-size: 0.7rem; cursor: pointer; transition: 0.2s; font-family: inherit; opacity:0.4;">
+                <i class="fas fa-undo"></i> сбросить всё
             </button>
+        </div>
 
+    </div>
+
+    <!-- ===== МОДАЛКА "ВЫ РАЗЬЕБАЛИ МОНИТОР" ===== -->
+    <div id="winModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(6px); z-index:9999; justify-content:center; align-items:center; animation:fadeIn 0.5s ease;">
+        <div style="background:var(--bg-card); padding:2.5rem 2rem; border-radius:32px; max-width:420px; width:90%; text-align:center; border:2px solid var(--border); box-shadow:0 40px 80px rgba(0,0,0,0.5);">
+            
+            <div style="font-size:4rem; margin-bottom:0.5rem;">💥</div>
+            <h2 style="font-size:2rem; font-weight:900; background:linear-gradient(135deg, #ef4444, #dc2626); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">ПОЗДРАВЛЯЮ!</h2>
+            <p style="font-size:1.2rem; color:var(--text-secondary); margin:0.5rem 0 1.5rem;">
+                Вы <strong style="color:#ef4444;">разьебали</strong> монитор! 🖥️💀
+            </p>
+            <div style="font-size:2rem; margin-bottom:1rem;">💀🔥🖥️</div>
+            <button onclick="closeWinModal()" style="padding:0.6rem 2rem; background:linear-gradient(135deg, var(--gradient-start), var(--gradient-end)); color:white; border:none; border-radius:40px; font-size:1rem; cursor:pointer; font-family:inherit;">
+                <i class="fas fa-sync"></i> Заново
+            </button>
         </div>
     </div>
 
     <!-- ================================================================
-    СКРИПТ ДЛЯ ТАП-СЧЁТЧИКА
+    СКРИПТ ДЛЯ ТАП-ДУЭЛИ
     ================================================================ -->
     <script>
-        // ТАП-СЧЁТЧИК
-        const TAP_STORAGE_KEY = 'luckyfiles_tap_count';
+        // ================================================================
+        // 1. КЛЮЧИ ДЛЯ ХРАНЕНИЯ
+        // ================================================================
 
-        function getTapCount() {
-            const stored = localStorage.getItem(TAP_STORAGE_KEY);
+        const LEFT_KEY = 'luckyfiles_tap_left';
+        const RIGHT_KEY = 'luckyfiles_tap_right';
+
+        // Картинки для левой и правой колонки (можно заменить)
+        const DEFAULT_IMAGE = 'https://i.postimg.cc/Y0pK8C0C/Nikita-red-back.png';
+        const WIN_IMAGE = 'https://i.postimg.cc/Y0pK8C0C/Nikita-red-back.png'; // ← сюда картинку "разьеб"
+
+        // ================================================================
+        // 2. ФУНКЦИИ РАБОТЫ СО СЧЁТЧИКАМИ
+        // ================================================================
+
+        function getCount(key) {
+            const stored = localStorage.getItem(key);
             return stored ? parseInt(stored, 10) : 0;
         }
 
-        function setTapCount(value) {
-            localStorage.setItem(TAP_STORAGE_KEY, String(value));
+        function setCount(key, value) {
+            localStorage.setItem(key, String(value));
         }
 
-        function updateTapDisplay() {
-            document.getElementById('tapCounter').textContent = getTapCount();
+        function updateDisplay() {
+            document.getElementById('tapCounterLeft').textContent = getCount(LEFT_KEY);
+            document.getElementById('tapCounterRight').textContent = getCount(RIGHT_KEY);
         }
 
-        function handleTap() {
-            const current = getTapCount();
+        // ================================================================
+        // 3. ТАП ПО ЛЕВОЙ КАРТИНКЕ (Начеканить)
+        // ================================================================
+
+        function handleTapLeft() {
+            const current = getCount(LEFT_KEY);
             const newCount = current + 1;
-            setTapCount(newCount);
-            updateTapDisplay();
+            setCount(LEFT_KEY, newCount);
+            updateDisplay();
+            animateTap('tapImageLeft');
 
-            // Анимация нажатия
-            const img = document.getElementById('tapImage');
-            img.style.transform = 'scale(0.90)';
-            setTimeout(() => {
-                img.style.transform = 'scale(1)';
-            }, 150);
-        }
-
-        function resetTap() {
-            if (confirm('Сбросить счётчик нажатий?')) {
-                setTapCount(0);
-                updateTapDisplay();
+            // Шанс 3% на выигрыш (разьеб)
+            if (Math.random() < 0.03) {
+                triggerWin();
             }
         }
 
-        // Загружаем счётчик при старте
-        document.addEventListener('DOMContentLoaded', updateTapDisplay);
+        // ================================================================
+        // 4. ТАП ПО ПРАВОЙ КАРТИНКЕ (Инвестиции)
+        // ================================================================
 
-        // Клик по картинке
-        document.getElementById('tapImage').addEventListener('click', handleTap);
+        function handleTapRight() {
+            const current = getCount(RIGHT_KEY);
+            const newCount = current + 1;
+            setCount(RIGHT_KEY, newCount);
+            updateDisplay();
+            animateTap('tapImageRight');
+
+            // Шанс 2% на выигрыш
+            if (Math.random() < 0.02) {
+                triggerWin();
+            }
+        }
+
+        // ================================================================
+        // 5. АНИМАЦИЯ НАЖАТИЯ
+        // ================================================================
+
+        function animateTap(id) {
+            const el = document.getElementById(id);
+            el.style.transform = 'scale(0.88)';
+            setTimeout(() => {
+                el.style.transform = 'scale(1)';
+            }, 150);
+        }
+
+        // ================================================================
+        // 6. ВЫИГРЫШ (РАЗЬЕБ)
+        // ================================================================
+
+        let winLock = false;
+
+        function triggerWin() {
+            if (winLock) return;
+            winLock = true;
+
+            // Меняем картинки на "разьеб"
+            document.getElementById('leftImg').src = WIN_IMAGE;
+            document.getElementById('rightImg').src = WIN_IMAGE;
+
+            // Показываем модалку
+            document.getElementById('winModal').style.display = 'flex';
+
+            // Вибрация (если есть)
+            if (navigator.vibrate) navigator.vibrate(200);
+        }
+
+        function closeWinModal() {
+            document.getElementById('winModal').style.display = 'none';
+            // Возвращаем картинки обратно
+            document.getElementById('leftImg').src = DEFAULT_IMAGE;
+            document.getElementById('rightImg').src = DEFAULT_IMAGE;
+            winLock = false;
+        }
+
+        // Закрытие по клику на фон
+        document.getElementById('winModal').addEventListener('click', function(e) {
+            if (e.target === this) closeWinModal();
+        });
+
+        // ================================================================
+        // 7. СБРОС
+        // ================================================================
+
+        function resetAllTaps() {
+            if (confirm('Сбросить все счётчики?')) {
+                setCount(LEFT_KEY, 0);
+                setCount(RIGHT_KEY, 0);
+                updateDisplay();
+                // Если модалка открыта — закрываем
+                if (document.getElementById('winModal').style.display === 'flex') {
+                    closeWinModal();
+                }
+            }
+        }
+
+        // ================================================================
+        // 8. СТАРТ
+        // ================================================================
+
+        // Вешаем события на картинки
+        document.getElementById('tapImageLeft').addEventListener('click', handleTapLeft);
+        document.getElementById('tapImageRight').addEventListener('click', handleTapRight);
+
+        // Показываем сохранённые значения
+        updateDisplay();
+
+        console.log('💸 Тап-дуэль запущена! Шанс разьебать монитор: 2-3%');
     </script>
 
 </body>
