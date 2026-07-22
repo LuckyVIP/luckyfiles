@@ -1,4 +1,4 @@
-#🍀 LuckyFiles
+# 🍀 LuckyFiles
 ##  My personal corner of the internet.
 ## A place where I gather what inspires me: useful software, Minecraft modpacks, my projects, and a few random thoughts.
 
