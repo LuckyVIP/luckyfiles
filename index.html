@@ -773,7 +773,67 @@
         // ================================================================
 
         renderHome();
+ const titleEl = document.getElementById("homeTitle");
+    
+    // Если есть сохранённый заголовок — показываем его, иначе — иконка + LuckyFiles
+    if (homeSettings.title && homeSettings.title.trim() !== "" && homeSettings.title !== "LuckyFiles") {
+        titleEl.textContent = homeSettings.title;
+    } else {
+        titleEl.innerHTML = `<i class="fas fa-clover" style="color:#3b82f6; margin-right:8px;"></i> LuckyFiles`;
+    }
 
+    document.getElementById("homeSubtitle").textContent = homeSettings.subtitle || "Ваш персональный архив полезных программ";
+    document.getElementById("homeDescription").innerHTML = homeSettings.description || DEFAULT_HOME.description;
+
+    // Портрет
+    const img = document.getElementById("portraitImage");
+    const placeholder = document.getElementById("portraitPlaceholder");
+    if (homeSettings.portrait) {
+        img.src = homeSettings.portrait;
+        img.style.display = "block";
+        placeholder.style.display = "none";
+        img.onerror = function() {
+            img.style.display = "none";
+            placeholder.style.display = "flex";
+        };
+    } else {
+        img.style.display = "none";
+        placeholder.style.display = "flex";
+    }
+
+    // Галерея
+    const galleryGrid = document.getElementById("galleryGrid");
+    galleryGrid.innerHTML = "";
+    const images = homeSettings.gallery || DEFAULT_HOME.gallery;
+
+    if (images.length === 0) {
+        galleryGrid.innerHTML =
+            `<div style="grid-column:1/-1; text-align:center; color:var(--text-muted); padding:2rem 0;">Нет картинок в галерее</div>`;
+        return;
+    }
+
+    images.forEach(url => {
+        const item = document.createElement("div");
+        item.className = "gallery-item";
+        if (url) {
+            const imgEl = document.createElement("img");
+            imgEl.src = url;
+            imgEl.loading = "lazy";
+            imgEl.onerror = function() {
+                this.style.display = "none";
+                const placeholder2 = document.createElement("div");
+                placeholder2.className = "placeholder";
+                placeholder2.textContent = "❌ Ошибка";
+                item.appendChild(placeholder2);
+            };
+            item.appendChild(imgEl);
+        } else {
+            const placeholder2 = document.createElement("div");
+            placeholder2.className = "placeholder";
+            placeholder2.textContent = "🖼️ Пусто";
+            item.appendChild(placeholder2);
+        }
+        galleryGrid.appendChild(item);
         console.log("🍀 LuckyFiles — главная страница загружена!");
     </script>
 
