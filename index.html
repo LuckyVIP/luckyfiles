@@ -766,43 +766,7 @@
         console.log("🍀 LuckyFiles — главная страница загружена!");
     </script>
 
-    <!-- ==============================================================
-    НОВЫЙ БЛОК: ТАП-СЧЁТЧИК С КАРТИНКОЙ
-    ============================================================== -->
-    <div style="margin-top: 4rem; padding-top: 2rem; border-top: 2px solid var(--border);">
-        
-        <!-- Заголовок секции -->
-        <h3 style="text-align:center; margin-bottom:1.5rem; color:var(--text-secondary);">
-            <i class="fas fa-hand-pointer" style="color:var(--gradient-start);"></i> Нажми на картинку
-        </h3>
-
-        <div style="display:flex; flex-direction:column; align-items:center; gap:1.5rem;">
-
-            <!-- КАРТИНКА (замени ссылку на свою) -->
-            <div id="tapImage" style="cursor:pointer; transition:transform 0.15s ease; max-width:300px; width:100%; border-radius:24px; overflow:hidden; box-shadow: 0 12px 40px var(--shadow-hover); border: 2px solid var(--border);">
-                <img src="https://i.postimg.cc/Y0pK8C0C/Nikita-red-back.png" alt="Тап-картинка" style="width:100%; display:block; user-select:none; -webkit-user-drag:none;" />
-            </div>
-
-            <!-- СЧЁТЧИК -->
-            <div style="text-align:center;">
-                <div style="font-size:4rem; font-weight:900; color:var(--gradient-start); letter-spacing:-2px;" id="tapCounter">0</div>
-                <div style="color:var(--text-muted); font-size:1rem; margin-top:-0.2rem;">нажатий</div>
-            </div>
-
-            <!-- КНОПКА ТАП (дублирующая) -->
-            <button onclick="handleTap()" style="padding: 0.8rem 3rem; background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end)); color: white; border: none; border-radius: 60px; font-size: 1.5rem; font-weight: 700; cursor: pointer; transition: 0.2s; box-shadow: 0 8px 24px rgba(59,130,246,0.3); font-family: inherit;">
-                👆 ТАП
-            </button>
-
-            <!-- КНОПКА СБРОСА -->
-            <button onclick="resetTap()" style="padding: 0.4rem 1.5rem; background: transparent; color: var(--text-muted); border: 1px solid var(--border); border-radius: 40px; font-size: 0.85rem; cursor: pointer; transition: 0.2s; font-family: inherit;">
-                <i class="fas fa-undo"></i> Сбросить
-            </button>
-
-        </div>
-    </div>
-
-      <!-- ==============================================================
+        <!-- ==============================================================
     ТАП-СЧЁТЧИК (только картинка + счётчик)
     ============================================================== -->
     <div style="margin-top: 4rem; padding-top: 2rem; border-top: 2px solid var(--border);">
