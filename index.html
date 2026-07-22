@@ -766,8 +766,8 @@
         console.log("🍀 LuckyFiles — главная страница загружена!");
     </script>
 
-          <!-- ==============================================================
-    ИНВЕСТИЦИОННЫЙ ТАП-ДУЭЛЬ (2 колонки) — С РАЗЬЕБОМ НА МЕСТЕ
+           <!-- ==============================================================
+    ИНВЕСТИЦИОННЫЙ ТАП-ДУЭЛЬ (2 колонки) — С РАЗНЫМИ РАЗЬЕБАМИ
     ============================================================== -->
     <div style="margin-top: 4rem; padding-top: 2rem; border-top: 2px solid var(--border);">
         
@@ -789,8 +789,8 @@
                     <span style="color:var(--text-muted); font-size:0.8rem; margin-left:4px;">монет</span>
                 </div>
 
-                <!-- === СЮДА БУДЕТ ВСТАВЛЯТЬСЯ НАДПИСЬ "РАЗЬЕБ" === -->
-                <div id="leftWinMessage" style="min-height:2.2rem; font-size:0.95rem; font-weight:700; text-align:center; margin-top:0.2rem;"></div>
+                <!-- === ЛЕВАЯ НАДПИСЬ: ХАМСТЕРКОМБАТИКИ ОБВАЛИЛИСЬ === -->
+                <div id="leftWinMessage" style="min-height:2.8rem; font-size:0.9rem; font-weight:700; text-align:center; margin-top:0.2rem;"></div>
             </div>
 
             <!-- ===== ПРАВАЯ КОЛОНКА: ИНВЕСТИЦИИ ===== -->
@@ -809,8 +809,8 @@
                     <span style="color:var(--text-muted); font-size:0.8rem; margin-left:4px;">инвестиций</span>
                 </div>
 
-                <!-- === СЮДА БУДЕТ ВСТАВЛЯТЬСЯ НАДПИСЬ "РАЗЬЕБ" === -->
-                <div id="rightWinMessage" style="min-height:2.2rem; font-size:0.95rem; font-weight:700; text-align:center; margin-top:0.2rem;"></div>
+                <!-- === ПРАВАЯ НАДПИСЬ: ТАК И ОСТАЮТСЯ === -->
+                <div id="rightWinMessage" style="min-height:2.8rem; font-size:0.9rem; font-weight:700; text-align:center; margin-top:0.2rem;"></div>
             </div>
 
         </div>
@@ -825,7 +825,7 @@
     </div>
 
     <!-- ================================================================
-    СКРИПТ ДЛЯ ТАП-ДУЭЛИ (С РАЗЬЕБОМ НА МЕСТЕ)
+    СКРИПТ ДЛЯ ТАП-ДУЭЛИ (РАЗНЫЕ НАДПИСИ)
     ================================================================ -->
     <script>
         // ================================================================
@@ -858,7 +858,7 @@
         }
 
         // ================================================================
-        // 3. СБРОС ВСЕХ СОСТОЯНИЙ (включая "разьеб")
+        // 3. СБРОС ВСЕХ СОСТОЯНИЙ
         // ================================================================
 
         function resetAllTaps() {
@@ -871,73 +871,94 @@
                 document.getElementById('rightImg').src = DEFAULT_IMAGE;
                 document.getElementById('leftWinMessage').innerHTML = '';
                 document.getElementById('rightWinMessage').innerHTML = '';
-                // Убираем красные рамки
                 document.getElementById('leftCol').style.borderColor = 'var(--border)';
                 document.getElementById('rightCol').style.borderColor = 'var(--border)';
+                document.getElementById('leftCol').style.boxShadow = '0 8px 24px var(--shadow)';
+                document.getElementById('rightCol').style.boxShadow = '0 8px 24px var(--shadow)';
                 winLockLeft = false;
                 winLockRight = false;
             }
         }
 
         // ================================================================
-        // 4. ВЫИГРЫШ (РАЗЬЕБ) — ПРЯМО НА МЕСТЕ
+        // 4. РАЗНЫЕ ВЫИГРЫШИ (РАЗНЫЕ НАДПИСИ)
         // ================================================================
 
         let winLockLeft = false;
         let winLockRight = false;
 
-        function triggerWin(side) {
-            // side: 'left' или 'right'
-
-            if (side === 'left' && winLockLeft) return;
-            if (side === 'right' && winLockRight) return;
-
-            // Блокируем дальнейшие выигрыши для этой колонки
-            if (side === 'left') winLockLeft = true;
-            if (side === 'right') winLockRight = true;
+        function triggerWinLeft() {
+            if (winLockLeft) return;
+            winLockLeft = true;
 
             // Меняем картинку
-            const imgId = side === 'left' ? 'leftImg' : 'rightImg';
-            document.getElementById(imgId).src = WIN_IMAGE;
+            document.getElementById('leftImg').src = WIN_IMAGE;
 
-            // Добавляем надпись
-            const msgId = side === 'left' ? 'leftWinMessage' : 'rightWinMessage';
-            document.getElementById(msgId).innerHTML = `
-                <span style="color:#ef4444; font-size:1.2rem; display:block; animation:pulse 0.6s ease 3;">
-                    💥 ПОЗДРАВЛЯЮ!<br />ВЫ РАЗЬЕБАЛИ МОНИТОР!
+            // НАДПИСЬ ДЛЯ ЛЕВОЙ КОЛОНКИ — ОБВАЛ
+            document.getElementById('leftWinMessage').innerHTML = `
+                <span style="color:#ef4444; font-size:1.1rem; display:block; animation:pulse 0.6s ease 3; line-height:1.4;">
+                    💥 ХАМСТЕРКОМБАТИКИ<br />ОБВАЛИЛИСЬ В ЦЕНЕ!
+                </span>
+                <span style="color:#94a3b8; font-size:0.7rem; font-weight:400; display:block; margin-top:2px;">
+                    (график ушёл в минус 📉)
                 </span>
             `;
 
-            // Меняем рамку на красную
-            const colId = side === 'left' ? 'leftCol' : 'rightCol';
-            document.getElementById(colId).style.borderColor = '#ef4444';
-            document.getElementById(colId).style.boxShadow = '0 0 30px rgba(239,68,68,0.3)';
+            // Красная рамка
+            document.getElementById('leftCol').style.borderColor = '#ef4444';
+            document.getElementById('leftCol').style.boxShadow = '0 0 30px rgba(239,68,68,0.3)';
 
-            // Вибрация
-            if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
-
-            // Лёгкое трясение колонки
-            const col = document.getElementById(colId);
+            // Тряска
+            const col = document.getElementById('leftCol');
             col.style.animation = 'shake 0.5s ease';
-            setTimeout(() => {
-                col.style.animation = '';
-            }, 600);
+            setTimeout(() => { col.style.animation = ''; }, 600);
+
+            if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
         }
 
-        // Добавляем анимацию тряски (если ещё нет)
+        function triggerWinRight() {
+            if (winLockRight) return;
+            winLockRight = true;
+
+            // Меняем картинку
+            document.getElementById('rightImg').src = WIN_IMAGE;
+
+            // НАДПИСЬ ДЛЯ ПРАВОЙ КОЛОНКИ — СТАБИЛЬНОСТЬ
+            document.getElementById('rightWinMessage').innerHTML = `
+                <span style="color:#22c55e; font-size:1.1rem; display:block; animation:pulse 0.6s ease 3; line-height:1.4;">
+                    🟢 А ЭТИ ТАК<br />И ОСТАЮТСЯ!
+                </span>
+                <span style="color:#94a3b8; font-size:0.7rem; font-weight:400; display:block; margin-top:2px;">
+                    (стабильность — путь к успеху 📈)
+                </span>
+            `;
+
+            // Зелёная рамка
+            document.getElementById('rightCol').style.borderColor = '#22c55e';
+            document.getElementById('rightCol').style.boxShadow = '0 0 30px rgba(34,197,94,0.3)';
+
+            // Тряска
+            const col = document.getElementById('rightCol');
+            col.style.animation = 'shake 0.5s ease';
+            setTimeout(() => { col.style.animation = ''; }, 600);
+
+            if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+        }
+
+        // Добавляем анимации
         const styleSheet = document.createElement('style');
         styleSheet.textContent = `
             @keyframes shake {
                 0%, 100% { transform: translateX(0); }
-                10% { transform: translateX(-10px) rotate(-1deg); }
-                30% { transform: translateX(10px) rotate(1deg); }
-                50% { transform: translateX(-6px); }
-                70% { transform: translateX(6px); }
+                10% { transform: translateX(-8px) rotate(-1deg); }
+                30% { transform: translateX(8px) rotate(1deg); }
+                50% { transform: translateX(-5px); }
+                70% { transform: translateX(5px); }
                 90% { transform: translateX(-2px); }
             }
             @keyframes pulse {
                 0%, 100% { transform: scale(1); }
-                50% { transform: scale(1.1); }
+                50% { transform: scale(1.08); }
             }
         `;
         document.head.appendChild(styleSheet);
@@ -947,30 +968,28 @@
         // ================================================================
 
         function handleTapLeft() {
-            if (winLockLeft) return; // Если уже разьеб — ничего не делаем
-
+            if (winLockLeft) return;
             const current = getCount(LEFT_KEY);
             setCount(LEFT_KEY, current + 1);
             updateDisplay();
             animateTap('tapImageLeft');
 
-            // Шанс 3% на разьеб
+            // Шанс 3% на обвал
             if (Math.random() < 0.03) {
-                triggerWin('left');
+                triggerWinLeft();
             }
         }
 
         function handleTapRight() {
             if (winLockRight) return;
-
             const current = getCount(RIGHT_KEY);
             setCount(RIGHT_KEY, current + 1);
             updateDisplay();
             animateTap('tapImageRight');
 
-            // Шанс 2% на разьеб
+            // Шанс 2% на "так и остаются"
             if (Math.random() < 0.02) {
-                triggerWin('right');
+                triggerWinRight();
             }
         }
 
@@ -991,8 +1010,12 @@
 
         updateDisplay();
 
-        console.log('💸 Тап-дуэль с разьебом на месте запущена! Шанс: 2-3%');
+        console.log('💸 Тап-дуэль с разными разьебами запущена!');
+        console.log('🔴 Левый: обвал Хамстеркомбатиков (3%)');
+        console.log('🟢 Правый: так и остаются (2%)');
     </script>
 
+
+    
 </body>
 </html>
