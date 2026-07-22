@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Мои сборки Minecraft</title>
+
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/Y0pK8C0C/Nikita-red-back.png" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <style>
+        /* ===== ПЕРЕМЕННЫЕ ===== */
+        :root {
+            --bg: #f6f9fc;
+            --bg-card: #ffffff;
+            --text: #1e293b;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --shadow: rgba(0, 0, 0, 0.04);
+            --shadow-hover: rgba(0, 0, 0, 0.08);
+            --gradient-start: #3b82f6;
+            --gradient-end: #8b5cf6;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0a0a0f;
+            --bg-card: #18181f;
+            --text: #e9e9f0;
+            --text-secondary: #a0a0b8;
+            --text-muted: #6a6a82;
+            --border: #2a2a35;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --shadow-hover: rgba(0, 0, 0, 0.5);
+            --gradient-start: #4f8df7;
+            --gradient-end: #9b6cf7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            transition: background 0.3s, color 0.3s;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ===== НАВИГАЦИЯ ===== */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .nav-logo i {
+            -webkit-text-fill-color: var(--gradient-start);
+            margin-right: 6px;
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .theme-toggle,
+        .nav-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            font-family: inherit;
+        }
+
+        .theme-toggle:hover,
+        .nav-btn:hover {
+            background: var(--border);
+            transform: scale(1.02);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            border: none;
+        }
+
+        /* ===== ЗАГОЛОВОК ===== */
+        .page-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-top: 0.3rem;
+        }
+
+        /* ===== СЕТКА МОДПАКОВ ===== */
+        .modpacks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 2rem;
+        }
+
+        .modpack-card {
+            background: var(--bg-card);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 24px var(--shadow);
+            transition: transform 0.25s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modpack-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 48px var(--shadow-hover);
+        }
+
+        .modpack-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modpack-card .modpack-body {
+            padding: 1.5rem 1.5rem 1.8rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modpack-card .modpack-body h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+
+        .modpack-card .modpack-body .version {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modpack-card .modpack-body .version i {
+            color: var(--gradient-start);
+        }
+
+        .modpack-card .modpack-body .desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            flex: 1;
+            margin-bottom: 1.2rem;
+        }
+
+        .modpack-card .modpack-body .meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+            margin-top: auto;
+        }
+
+        .modpack-card .modpack-body .meta i {
+            margin-right: 4px;
+        }
+
+        .modpack-card .modpack-body .btn-download {
+            background: #1e293b;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            margin-top: 0.5rem;
+            align-self: flex-start;
+        }
+
+        .modpack-card .modpack-body .btn-download:hover {
+            background: #0f172a;
+            transform: scale(1.02);
+        }
+
+        /* ===== АДАПТИВ ===== */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .nav-controls {
+                justify-content: center;
+            }
+            .modpacks-grid {
+                grid-template-columns: 1fr;
+            }
+            .page-header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modpack-card img {
+                height: 160px;
+            }
+            .modpack-card .modpack-body h3 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ===== НАВИГАЦИЯ ===== -->
+        <nav class="navbar">
+            <div class="nav-logo">
+                <i class="fas fa-clover"></i> LuckyFiles
+            </div>
+
+            <div class="nav-controls">
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon" id="themeIcon"></i> <span id="themeLabel">Тёмная</span>
+                </button>
+
+                <a href="index.html" class="nav-btn">
+                    <i class="fas fa-home"></i> Главная
+                </a>
+
+                <a href="programs.html" class="nav-btn">
+                    <i class="fas fa-th-list"></i> Программы
+                </a>
+
+                <a href="modpacks.html" class="nav-btn active">
+                    <i class="fas fa-cubes"></i> Модпаки
+                </a>
+            </div>
+        </nav>
+
+        <!-- ==============================================================
+        ЗАГОЛОВОК
+        ============================================================== -->
+        <div class="page-header">
+            <h1>🎮 Мои сборки Minecraft</h1>
+            <p>Скачивай мои модпаки и играй с друзьями!</p>
+        </div>
+
+        <!-- ==============================================================
+        СЕТКА МОДПАКОВ
+        ============================================================== -->
+        <div class="modpacks-grid">
+
+            <!-- ===== МОДПАК 1 ===== -->
+            <div class="modpack-card">
+                <img src="https://i.postimg.cc/Y0pK8C0C/Nikita-red-back.png" alt="Модпак 1" />
+                <div class="modpack-body">
+                    <h3>🔥 Техно-магия</h3>
+                    <div class="version"><i class="fas fa-tag"></i> 1.19.2 | 120+ модов</div>
+                    <div class="desc">Мощный микс технологий и магии. Автоматизация, реакторы, заклинания и исследования. Подходит для опытных игроков.</div>
+                    <div class="meta">
+                        <span><i class="fas fa-download"></i> 1.2K скачиваний</span>
+                        <span><i class="fas fa-weight-hanging"></i> 8.4 ГБ</span>
+                    </div>
+                    <a href="ССЫЛКА_НА_СКАЧИВАНИЕ_МОДПАКА_1" class="btn-download" target="_blank">
+                        <i class="fas fa-cloud-arrow-down"></i> Скачать
+                    </a>
+                </div>
+            </div>
+
+            <!-- ===== МОДПАК 2 ===== -->
+            <div class="modpack-card">
+                <img src="https://i.postimg.cc/Y0pK8C0C/Nikita-red-back.png" alt="Модпак 2" />
+                <div class="modpack-body">
+                    <h3>🏰 Средневековое приключение</h3>
+                    <div class="version"><i class="fas fa-tag"></i> 1.18.2 | 80+ модов</div>
+                    <div class="desc">Погружение в атмосферу средневековья. Замки, рыцари, драконы, гильдии и огромные подземелья.</div>
+                    <div class="meta">
+                        <span><i class="fas fa-download"></i> 856 скачиваний</span>
+                        <span><i class="fas fa-weight-hanging"></i> 6.1 ГБ</span>
+                    </div>
+                    <a href="ССЫЛКА_НА_СКАЧИВАНИЕ_МОДПАКА_2" class="btn-download" target="_blank">
+                        <i class="fas fa-cloud-arrow-down"></i> Скачать
+                    </a>
+                </div>
+            </div>
+
+            <!-- ===== МОДПАК 3 ===== -->
+            <div class="modpack-card">
+                <img src="https://i.postimg.cc/Y0pK8C0C/Nikita-red-back.png" alt="Модпак 3" />
+                <div class="modpack-body">
+                    <h3>🚀 Космическая экспансия</h3>
+                    <div class="version"><i class="fas fa-tag"></i> 1.20.1 | 150+ модов</div>
+                    <div class="desc">Освой космос! Строительство ракет, колонизация планет, продвинутые технологии и исследования галактик.</div>
+                    <div class="meta">
+                        <span><i class="fas fa-download"></i> 2.1K скачиваний</span>
+                        <span><i class="fas fa-weight-hanging"></i> 10.2 ГБ</span>
+                    </div>
+                    <a href="ССЫЛКА_НА_СКАЧИВАНИЕ_МОДПАКА_3" class="btn-download" target="_blank">
+                        <i class="fas fa-cloud-arrow-down"></i> Скачать
+                    </a>
+                </div>
+            </div>
+
+            <!-- ===== МОДПАК 4 (добавь сколько хочешь) ===== -->
+            <div class="modpack-card">
+                <img src="https://i.postimg.cc/Y0pK8C0C/Nikita-red-back.png" alt="Модпак 4" />
+                <div class="modpack-body">
+                    <h3>🧙‍♂️ Магическая академия</h3>
+                    <div class="version"><i class="fas fa-tag"></i> 1.16.5 | 60+ модов</div>
+                    <div class="desc">Стань великим магом! Изучай заклинания, зельеварение, магические артефакты и сражайся с тёмными силами.</div>
+                    <div class="meta">
+                        <span><i class="fas fa-download"></i> 423 скачивания</span>
+                        <span><i class="fas fa-weight-hanging"></i> 4.8 ГБ</span>
+                    </div>
+                    <a href="ССЫЛКА_НА_СКАЧИВАНИЕ_МОДПАКА_4" class="btn-download" target="_blank">
+                        <i class="fas fa-cloud-arrow-down"></i> Скачать
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ================================================================
+    СКРИПТ (ТЁМНАЯ ТЕМА)
+    ================================================================ -->
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute("data-theme");
+            const newTheme = current === "dark" ? "light" : "dark";
+            html.setAttribute("data-theme", newTheme);
+
+            const icon = document.getElementById("themeIcon");
+            const label = document.getElementById("themeLabel");
+
+            if (newTheme === "dark") {
+                icon.className = "fas fa-sun";
+                label.textContent = "Светлая";
+            } else {
+                icon.className = "fas fa-moon";
+                label.textContent = "Тёмная";
+            }
+
+            localStorage.setItem("luckyfiles_theme", newTheme);
+        }
+
+        const savedTheme = localStorage.getItem("luckyfiles_theme");
+        if (savedTheme === "dark") {
+            document.documentElement.setAttribute("data-theme", "dark");
+            document.getElementById("themeIcon").className = "fas fa-sun";
+            document.getElementById("themeLabel").textContent = "Светлая";
+        }
+    </script>
+
+</body>
+</html>
