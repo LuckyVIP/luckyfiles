@@ -687,6 +687,36 @@
     <!-- ================================================================
     JAVASCRIPT
     ================================================================ -->
+     // ================================================================
+     // ЛАЙТБОКС (открытие картинок в полный размер)
+     // ================================================================
+
+        function openLightbox(imageSrc) {
+            const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightboxImg');
+            img.src = imageSrc;
+            lightbox.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLightbox();
+            }
+        });
+
+    
     <script>
         // ================================================================
         // 1. НАСТРОЙКИ ГЛАВНОЙ СТРАНИЦЫ (localStorage)
@@ -1036,6 +1066,24 @@
         console.log("🍀 LuckyFiles — главная страница загружена!");
         console.log('💸 Инвестиции + Начеканить (в ряд) запущены!');
     </script>
+
+    <!-- ==============================================================
+    МОДАЛЬНОЕ ОКНО ДЛЯ ПРОСМОТРА КАРТИНОК (Лайтбокс)
+    ============================================================== -->
+    <div id="lightbox" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); z-index:9999; justify-content:center; align-items:center; cursor:pointer; padding:2rem;">
+        <div style="max-width:90%; max-height:90%; display:flex; align-items:center; justify-content:center; position:relative;">
+            <img id="lightboxImg" src="" alt="Просмотр" style="max-width:100%; max-height:90vh; border-radius:16px; box-shadow:0 20px 60px rgba(0,0,0,0.6); border:2px solid var(--border); object-fit:contain;" />
+            <button onclick="closeLightbox()" style="position:absolute; top:-40px; right:-10px; background:transparent; border:none; color:white; font-size:2.5rem; cursor:pointer; transition:0.2s; padding:0 10px; text-shadow:0 2px 20px rgba(0,0,0,0.8);">
+                ✕
+            </button>
+        </div>
+    </div>
+
+
+
+
+
+
     
 </body>
 </html>
