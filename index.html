@@ -766,50 +766,56 @@
         console.log("🍀 LuckyFiles — главная страница загружена!");
     </script>
 
-        <!-- ==============================================================
-    ИНВЕСТИЦИОННЫЙ ТАП-ДУЭЛЬ (2 колонки)
+          <!-- ==============================================================
+    ИНВЕСТИЦИОННЫЙ ТАП-ДУЭЛЬ (2 колонки) — С РАЗЬЕБОМ НА МЕСТЕ
     ============================================================== -->
     <div style="margin-top: 4rem; padding-top: 2rem; border-top: 2px solid var(--border);">
         
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem; max-width:600px; margin:0 auto;">
 
             <!-- ===== ЛЕВАЯ КОЛОНКА: НАЧЕКАНИТЬ ===== -->
-            <div style="display:flex; flex-direction:column; align-items:center; gap:0.6rem; padding:1.5rem 1rem; background:var(--bg-card); border-radius:24px; border:1px solid var(--border); box-shadow:0 8px 24px var(--shadow);">
+            <div id="leftCol" style="display:flex; flex-direction:column; align-items:center; gap:0.4rem; padding:1.5rem 1rem; background:var(--bg-card); border-radius:24px; border:1px solid var(--border); box-shadow:0 8px 24px var(--shadow);">
                 
                 <div style="font-size:1.1rem; font-weight:700; color:var(--text-secondary); letter-spacing:1px;">
                     💰 Начеканить
                 </div>
 
-                <div id="tapImageLeft" style="cursor:pointer; transition:transform 0.12s ease; max-width:110px; width:100%; border-radius:16px; overflow:hidden; border:2px solid var(--border); box-shadow: 0 4px 16px var(--shadow-hover);">
-                    <img id="leftImg" src="https://www.exegate.ru/images/catalogue/preview2/294344_2m.jpg" alt="Тап" style="width:100%; display:block; user-select:none; -webkit-user-drag:none;" />
+                <div id="tapImageLeft" style="cursor:pointer; transition:transform 0.12s ease; max-width:120px; width:100%; border-radius:16px; overflow:hidden; border:2px solid var(--border); box-shadow: 0 4px 16px var(--shadow-hover);">
+                    <img id="leftImg" src="https://i.postimg.cc/Y0pK8C0C/Nikita-red-back.png" alt="Тап" style="width:100%; display:block; user-select:none; -webkit-user-drag:none;" />
                 </div>
 
                 <div style="text-align:center;">
                     <span style="font-size:2rem; font-weight:800; color:var(--gradient-start);" id="tapCounterLeft">0</span>
                     <span style="color:var(--text-muted); font-size:0.8rem; margin-left:4px;">монет</span>
                 </div>
+
+                <!-- === СЮДА БУДЕТ ВСТАВЛЯТЬСЯ НАДПИСЬ "РАЗЬЕБ" === -->
+                <div id="leftWinMessage" style="min-height:2.2rem; font-size:0.95rem; font-weight:700; text-align:center; margin-top:0.2rem;"></div>
             </div>
 
             <!-- ===== ПРАВАЯ КОЛОНКА: ИНВЕСТИЦИИ ===== -->
-            <div style="display:flex; flex-direction:column; align-items:center; gap:0.6rem; padding:1.5rem 1rem; background:var(--bg-card); border-radius:24px; border:1px solid var(--border); box-shadow:0 8px 24px var(--shadow);">
+            <div id="rightCol" style="display:flex; flex-direction:column; align-items:center; gap:0.4rem; padding:1.5rem 1rem; background:var(--bg-card); border-radius:24px; border:1px solid var(--border); box-shadow:0 8px 24px var(--shadow);">
                 
                 <div style="font-size:1.1rem; font-weight:700; color:var(--text-secondary); letter-spacing:1px;">
                     📈 Инвестиции
                 </div>
 
-                <div id="tapImageRight" style="cursor:pointer; transition:transform 0.12s ease; max-width:110px; width:100%; border-radius:16px; overflow:hidden; border:2px solid var(--border); box-shadow: 0 4px 16px var(--shadow-hover);">
-                    <img id="rightImg" src="https://coinspot.io/wp-content/uploads/2024/09/snimok-ekrana-2024-09-15-v-17.03.12.png" alt="Инвест" style="width:100%; display:block; user-select:none; -webkit-user-drag:none;" />
+                <div id="tapImageRight" style="cursor:pointer; transition:transform 0.12s ease; max-width:120px; width:100%; border-radius:16px; overflow:hidden; border:2px solid var(--border); box-shadow: 0 4px 16px var(--shadow-hover);">
+                    <img id="rightImg" src="https://i.postimg.cc/Y0pK8C0C/Nikita-red-back.png" alt="Инвест" style="width:100%; display:block; user-select:none; -webkit-user-drag:none;" />
                 </div>
 
                 <div style="text-align:center;">
                     <span style="font-size:2rem; font-weight:800; color:#f59e0b;" id="tapCounterRight">0</span>
                     <span style="color:var(--text-muted); font-size:0.8rem; margin-left:4px;">инвестиций</span>
                 </div>
+
+                <!-- === СЮДА БУДЕТ ВСТАВЛЯТЬСЯ НАДПИСЬ "РАЗЬЕБ" === -->
+                <div id="rightWinMessage" style="min-height:2.2rem; font-size:0.95rem; font-weight:700; text-align:center; margin-top:0.2rem;"></div>
             </div>
 
         </div>
 
-        <!-- КНОПКА СБРОСА (общая, маленькая) -->
+        <!-- КНОПКА СБРОСА -->
         <div style="text-align:center; margin-top:1.5rem;">
             <button onclick="resetAllTaps()" style="padding: 0.2rem 1.2rem; background: transparent; color: var(--text-muted); border: 1px solid var(--border); border-radius: 30px; font-size: 0.7rem; cursor: pointer; transition: 0.2s; font-family: inherit; opacity:0.4;">
                 <i class="fas fa-undo"></i> сбросить всё
@@ -818,24 +824,8 @@
 
     </div>
 
-    <!-- ===== МОДАЛКА "ВЫ РАЗЬЕБАЛИ МОНИТОР" ===== -->
-    <div id="winModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(6px); z-index:9999; justify-content:center; align-items:center; animation:fadeIn 0.5s ease;">
-        <div style="background:var(--bg-card); padding:2.5rem 2rem; border-radius:32px; max-width:420px; width:90%; text-align:center; border:2px solid var(--border); box-shadow:0 40px 80px rgba(0,0,0,0.5);">
-            
-            <div style="font-size:4rem; margin-bottom:0.5rem;">💥</div>
-            <h2 style="font-size:2rem; font-weight:900; background:linear-gradient(135deg, #ef4444, #dc2626); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">ПОЗДРАВЛЯЮ!</h2>
-            <p style="font-size:1.2rem; color:var(--text-secondary); margin:0.5rem 0 1.5rem;">
-                Вы <strong style="color:#ef4444;">разьебали</strong> монитор! 🖥️💀
-            </p>
-            <div style="font-size:2rem; margin-bottom:1rem;">💀🔥🖥️</div>
-            <button onclick="closeWinModal()" style="padding:0.6rem 2rem; background:linear-gradient(135deg, var(--gradient-start), var(--gradient-end)); color:white; border:none; border-radius:40px; font-size:1rem; cursor:pointer; font-family:inherit;">
-                <i class="fas fa-sync"></i> Заново
-            </button>
-        </div>
-    </div>
-
     <!-- ================================================================
-    СКРИПТ ДЛЯ ТАП-ДУЭЛИ
+    СКРИПТ ДЛЯ ТАП-ДУЭЛИ (С РАЗЬЕБОМ НА МЕСТЕ)
     ================================================================ -->
     <script>
         // ================================================================
@@ -845,9 +835,9 @@
         const LEFT_KEY = 'luckyfiles_tap_left';
         const RIGHT_KEY = 'luckyfiles_tap_right';
 
-        // Картинки для левой и правой колонки (можно заменить)
+        // Картинки (замени ссылки на свои)
         const DEFAULT_IMAGE = 'https://i.postimg.cc/Y0pK8C0C/Nikita-red-back.png';
-        const WIN_IMAGE = 'https://i.postimg.cc/Y0pK8C0C/Nikita-red-back.png'; // ← сюда картинку "разьеб"
+        const WIN_IMAGE = 'https://i.postimg.cc/Y0pK8C0C/Nikita-red-back.png'; // ← СЮДА ССЫЛКУ НА КАРТИНКУ "РАЗЬЕБ"
 
         // ================================================================
         // 2. ФУНКЦИИ РАБОТЫ СО СЧЁТЧИКАМИ
@@ -868,87 +858,7 @@
         }
 
         // ================================================================
-        // 3. ТАП ПО ЛЕВОЙ КАРТИНКЕ (Начеканить)
-        // ================================================================
-
-        function handleTapLeft() {
-            const current = getCount(LEFT_KEY);
-            const newCount = current + 1;
-            setCount(LEFT_KEY, newCount);
-            updateDisplay();
-            animateTap('tapImageLeft');
-
-            // Шанс 3% на выигрыш (разьеб)
-            if (Math.random() < 0.03) {
-                triggerWin();
-            }
-        }
-
-        // ================================================================
-        // 4. ТАП ПО ПРАВОЙ КАРТИНКЕ (Инвестиции)
-        // ================================================================
-
-        function handleTapRight() {
-            const current = getCount(RIGHT_KEY);
-            const newCount = current + 1;
-            setCount(RIGHT_KEY, newCount);
-            updateDisplay();
-            animateTap('tapImageRight');
-
-            // Шанс 2% на выигрыш
-            if (Math.random() < 0.02) {
-                triggerWin();
-            }
-        }
-
-        // ================================================================
-        // 5. АНИМАЦИЯ НАЖАТИЯ
-        // ================================================================
-
-        function animateTap(id) {
-            const el = document.getElementById(id);
-            el.style.transform = 'scale(0.88)';
-            setTimeout(() => {
-                el.style.transform = 'scale(1)';
-            }, 150);
-        }
-
-        // ================================================================
-        // 6. ВЫИГРЫШ (РАЗЬЕБ)
-        // ================================================================
-
-        let winLock = false;
-
-        function triggerWin() {
-            if (winLock) return;
-            winLock = true;
-
-            // Меняем картинки на "разьеб"
-            document.getElementById('leftImg').src = WIN_IMAGE;
-            document.getElementById('rightImg').src = WIN_IMAGE;
-
-            // Показываем модалку
-            document.getElementById('winModal').style.display = 'flex';
-
-            // Вибрация (если есть)
-            if (navigator.vibrate) navigator.vibrate(200);
-        }
-
-        function closeWinModal() {
-            document.getElementById('winModal').style.display = 'none';
-            // Возвращаем картинки обратно
-            document.getElementById('leftImg').src = DEFAULT_IMAGE;
-            document.getElementById('rightImg').src = DEFAULT_IMAGE;
-            winLock = false;
-        }
-
-        // Закрытие по клику на фон
-        document.getElementById('winModal').addEventListener('click', function(e) {
-            if (e.target === this) closeWinModal();
-        });
-
-        // ================================================================
-        // 7. СБРОС
+        // 3. СБРОС ВСЕХ СОСТОЯНИЙ (включая "разьеб")
         // ================================================================
 
         function resetAllTaps() {
@@ -956,25 +866,132 @@
                 setCount(LEFT_KEY, 0);
                 setCount(RIGHT_KEY, 0);
                 updateDisplay();
-                // Если модалка открыта — закрываем
-                if (document.getElementById('winModal').style.display === 'flex') {
-                    closeWinModal();
-                }
+                // Возвращаем картинки и убираем надписи
+                document.getElementById('leftImg').src = DEFAULT_IMAGE;
+                document.getElementById('rightImg').src = DEFAULT_IMAGE;
+                document.getElementById('leftWinMessage').innerHTML = '';
+                document.getElementById('rightWinMessage').innerHTML = '';
+                // Убираем красные рамки
+                document.getElementById('leftCol').style.borderColor = 'var(--border)';
+                document.getElementById('rightCol').style.borderColor = 'var(--border)';
+                winLockLeft = false;
+                winLockRight = false;
             }
         }
 
         // ================================================================
-        // 8. СТАРТ
+        // 4. ВЫИГРЫШ (РАЗЬЕБ) — ПРЯМО НА МЕСТЕ
         // ================================================================
 
-        // Вешаем события на картинки
+        let winLockLeft = false;
+        let winLockRight = false;
+
+        function triggerWin(side) {
+            // side: 'left' или 'right'
+
+            if (side === 'left' && winLockLeft) return;
+            if (side === 'right' && winLockRight) return;
+
+            // Блокируем дальнейшие выигрыши для этой колонки
+            if (side === 'left') winLockLeft = true;
+            if (side === 'right') winLockRight = true;
+
+            // Меняем картинку
+            const imgId = side === 'left' ? 'leftImg' : 'rightImg';
+            document.getElementById(imgId).src = WIN_IMAGE;
+
+            // Добавляем надпись
+            const msgId = side === 'left' ? 'leftWinMessage' : 'rightWinMessage';
+            document.getElementById(msgId).innerHTML = `
+                <span style="color:#ef4444; font-size:1.2rem; display:block; animation:pulse 0.6s ease 3;">
+                    💥 ПОЗДРАВЛЯЮ!<br />ВЫ РАЗЬЕБАЛИ МОНИТОР!
+                </span>
+            `;
+
+            // Меняем рамку на красную
+            const colId = side === 'left' ? 'leftCol' : 'rightCol';
+            document.getElementById(colId).style.borderColor = '#ef4444';
+            document.getElementById(colId).style.boxShadow = '0 0 30px rgba(239,68,68,0.3)';
+
+            // Вибрация
+            if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+
+            // Лёгкое трясение колонки
+            const col = document.getElementById(colId);
+            col.style.animation = 'shake 0.5s ease';
+            setTimeout(() => {
+                col.style.animation = '';
+            }, 600);
+        }
+
+        // Добавляем анимацию тряски (если ещё нет)
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10% { transform: translateX(-10px) rotate(-1deg); }
+                30% { transform: translateX(10px) rotate(1deg); }
+                50% { transform: translateX(-6px); }
+                70% { transform: translateX(6px); }
+                90% { transform: translateX(-2px); }
+            }
+            @keyframes pulse {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.1); }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+
+        // ================================================================
+        // 5. ТАПЫ
+        // ================================================================
+
+        function handleTapLeft() {
+            if (winLockLeft) return; // Если уже разьеб — ничего не делаем
+
+            const current = getCount(LEFT_KEY);
+            setCount(LEFT_KEY, current + 1);
+            updateDisplay();
+            animateTap('tapImageLeft');
+
+            // Шанс 3% на разьеб
+            if (Math.random() < 0.03) {
+                triggerWin('left');
+            }
+        }
+
+        function handleTapRight() {
+            if (winLockRight) return;
+
+            const current = getCount(RIGHT_KEY);
+            setCount(RIGHT_KEY, current + 1);
+            updateDisplay();
+            animateTap('tapImageRight');
+
+            // Шанс 2% на разьеб
+            if (Math.random() < 0.02) {
+                triggerWin('right');
+            }
+        }
+
+        function animateTap(id) {
+            const el = document.getElementById(id);
+            el.style.transform = 'scale(0.85)';
+            setTimeout(() => {
+                el.style.transform = 'scale(1)';
+            }, 150);
+        }
+
+        // ================================================================
+        // 6. СТАРТ
+        // ================================================================
+
         document.getElementById('tapImageLeft').addEventListener('click', handleTapLeft);
         document.getElementById('tapImageRight').addEventListener('click', handleTapRight);
 
-        // Показываем сохранённые значения
         updateDisplay();
 
-        console.log('💸 Тап-дуэль запущена! Шанс разьебать монитор: 2-3%');
+        console.log('💸 Тап-дуэль с разьебом на месте запущена! Шанс: 2-3%');
     </script>
 
 </body>
