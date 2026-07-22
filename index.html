@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LuckyFiles — скачай лучшие программы</title>
 
-    <link rel="icon" type="image/png" href="https://i.postimg.cc/Y0pK8C0C/Nikita-red-back.png" />
+    <!-- Аватарка (замени ссылку) -->
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/xxx/avatar.png" />
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
@@ -28,6 +30,7 @@
             --btn-hover: #0f172a;
             --success: #22c55e;
             --danger: #ef4444;
+            --warning: #f59e0b;
         }
 
         [data-theme="dark"] {
@@ -462,6 +465,7 @@
             transition: transform 0.25s, box-shadow 0.3s;
             display: flex;
             flex-direction: column;
+            position: relative;
         }
 
         .card:hover {
@@ -518,6 +522,14 @@
             margin-right: 4px;
         }
 
+        .card .admin-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 0.8rem;
+            padding-top: 0.8rem;
+            border-top: 1px solid var(--border);
+        }
+
         .btn-download {
             background: var(--btn-bg);
             color: var(--btn-text);
@@ -538,6 +550,27 @@
 
         .btn-download:hover {
             background: var(--btn-hover);
+        }
+
+        .btn-edit {
+            background: var(--warning);
+            color: #1e293b;
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-family: inherit;
+        }
+
+        .btn-edit:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
         }
 
         /* ================================================================
@@ -621,6 +654,10 @@
             box-shadow: 0 10px 30px rgba(59, 130, 246, 0.25);
         }
 
+        .admin-form .btn-submit.btn-update {
+            background: linear-gradient(135deg, var(--warning), #d97706);
+        }
+
         .admin-form small {
             color: var(--text-muted);
             display: block;
@@ -662,6 +699,27 @@
             width: 24px;
         }
 
+        .admin-list-item .actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .admin-list-item .edit-btn {
+            background: var(--warning);
+            border: none;
+            color: #1e293b;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 4px 12px;
+            border-radius: 8px;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+
+        .admin-list-item .edit-btn:hover {
+            transform: scale(1.05);
+        }
+
         .admin-list-item .delete-btn {
             background: transparent;
             border: none;
@@ -675,6 +733,23 @@
 
         .admin-list-item .delete-btn:hover {
             background: #ef444420;
+        }
+
+        .cancel-btn {
+            grid-column: 1 / -1;
+            padding: 0.6rem;
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+
+        .cancel-btn:hover {
+            background: var(--border);
         }
 
         /* ===== ОКНО ВХОДА ===== */
@@ -952,9 +1027,11 @@
         <div class="page" id="page-admin">
             <div class="admin-panel">
                 <h2><i class="fas fa-user-cog" style="color:var(--gradient-start);"></i> Панель управления</h2>
-                <p class="sub">Добавляйте и удаляйте программы</p>
+                <p class="sub" id="adminSub">Добавляйте и удаляйте программы</p>
 
-                <form class="admin-form" id="adminForm" onsubmit="addProgram(event)">
+                <form class="admin-form" id="adminForm" onsubmit="saveProgram(event)">
+                    <input type="hidden" id="editId" value="" />
+
                     <div class="full-width">
                         <label>Название программы *</label>
                         <input type="text" id="progName" placeholder="Например: PhotoMaster Pro" required />
@@ -995,7 +1072,6 @@
                         <input type="number" id="progDownloads" placeholder="0" value="0" />
                     </div>
 
-                    <!-- ===== НОВОЕ ПОЛЕ: ССЫЛКА НА КАРТИНКУ ===== -->
                     <div class="full-width">
                         <label>Ссылка на картинку программы (необязательно)</label>
                         <input type="url" id="progImageUrl" placeholder="https://i.imgur.com/abc123.jpg" />
@@ -1005,8 +1081,12 @@
                         </small>
                     </div>
 
-                    <button type="submit" class="btn-submit">
+                    <button type="submit" class="btn-submit" id="submitBtn">
                         <i class="fas fa-plus-circle"></i> Добавить программу
+                    </button>
+
+                    <button type="button" class="cancel-btn" id="cancelEditBtn" style="display:none;" onclick="cancelEdit()">
+                        <i class="fas fa-times"></i> Отменить редактирование
                     </button>
                 </form>
 
@@ -1046,10 +1126,10 @@
         // 1. НАСТРОЙКИ
         // ================================================================
 
-        const ADMIN_PASSWORD = "42"; // Смените на свой пароль!
+        const ADMIN_PASSWORD = "admin123"; // Смените на свой пароль!
 
         // Портрет на главной (вставьте прямую ссылку)
-        const PORTRAIT_IMAGE_URL = "https://i.imgur.com/SXvZM6G.jpeg"; // Например: "https://i.imgur.com/abc123.jpg"
+        const PORTRAIT_IMAGE_URL = ""; // Например: "https://i.imgur.com/abc123.jpg"
 
         // ================================================================
         // 2. ДАННЫЕ ПРОГРАММ (localStorage)
@@ -1155,8 +1235,10 @@
         }
 
         // ================================================================
-        // 4. РЕНДЕРИНГ ПРОГРАММ
+        // 4. РЕНДЕРИНГ ПРОГРАММ (с кнопками редактирования для админа)
         // ================================================================
+
+        let isAdmin = false;
 
         function renderCards(filtered) {
             const grid = document.getElementById("programGrid");
@@ -1185,7 +1267,20 @@
 
                 let imageHtml = "";
                 if (p.image) {
-                    imageHtml = `<img src="${p.image}" class="program-img" alt="${p.name}" loading="lazy" onerror="this.style.display='none'" />`;
+                    imageHtml =
+                        `<img src="${p.image}" class="program-img" alt="${p.name}" loading="lazy" onerror="this.style.display='none'" />`;
+                }
+
+                // Кнопки редактирования (только для админа)
+                let adminActionsHtml = "";
+                if (isAdmin) {
+                    adminActionsHtml = `
+                            <div class="admin-actions">
+                                <button class="btn-edit" onclick="editProgram(${p.id})">
+                                    <i class="fas fa-pen"></i> Редактировать
+                                </button>
+                            </div>
+                        `;
                 }
 
                 card.innerHTML = `
@@ -1201,6 +1296,7 @@
                         <a href="${p.link}" class="btn-download" target="_blank">
                             <i class="fas fa-cloud-arrow-down"></i> Скачать
                         </a>
+                        ${adminActionsHtml}
                     `;
                 grid.appendChild(card);
             });
@@ -1229,8 +1325,10 @@
         }
 
         // ================================================================
-        // 6. АДМИНКА
+        // 6. АДМИНКА (добавление + редактирование)
         // ================================================================
+
+        let editingId = null;
 
         function renderAdminList() {
             const container = document.getElementById("adminListItems");
@@ -1246,14 +1344,66 @@
                             ${p.image ? `<img src="${p.image}" alt="${p.name}" onerror="this.style.display='none'" />` : `<i class="fas ${p.icon || 'fa-file-zipper'}"></i>`}
                             <span><strong>${p.name}</strong> ${p.version ? p.version : ''}</span>
                         </div>
-                        <button class="delete-btn" onclick="deleteProgram(${p.id})" title="Удалить">
-                            <i class="fas fa-trash-can"></i>
-                        </button>
+                        <div class="actions">
+                            <button class="edit-btn" onclick="editProgram(${p.id})">
+                                <i class="fas fa-pen"></i>
+                            </button>
+                            <button class="delete-btn" onclick="deleteProgram(${p.id})" title="Удалить">
+                                <i class="fas fa-trash-can"></i>
+                            </button>
+                        </div>
                     </div>
                 `).join("");
         }
 
-        function addProgram(e) {
+        function editProgram(id) {
+            const p = programs.find(prog => prog.id === id);
+            if (!p) return;
+
+            editingId = id;
+
+            // Заполняем форму
+            document.getElementById("editId").value = id;
+            document.getElementById("progName").value = p.name;
+            document.getElementById("progVersion").value = p.version || "";
+            document.getElementById("progSize").value = p.size || "";
+            document.getElementById("progDesc").value = p.description || "";
+            document.getElementById("progIcon").value = p.icon || "fa-file-zipper";
+            document.getElementById("progLink").value = p.link;
+            document.getElementById("progCategory").value = p.category || "";
+            document.getElementById("progDownloads").value = p.downloads || 0;
+            document.getElementById("progImageUrl").value = p.image || "";
+
+            // Меняем кнопку
+            const submitBtn = document.getElementById("submitBtn");
+            submitBtn.innerHTML = `<i class="fas fa-save"></i> Сохранить изменения`;
+            submitBtn.classList.add("btn-update");
+
+            // Показываем кнопку отмены
+            document.getElementById("cancelEditBtn").style.display = "block";
+
+            // Меняем заголовок
+            document.getElementById("adminSub").textContent = "✏️ Редактирование программы";
+
+            // Прокручиваем к форме
+            document.getElementById("adminForm").scrollIntoView({ behavior: "smooth" });
+        }
+
+        function cancelEdit() {
+            editingId = null;
+            document.getElementById("editId").value = "";
+            document.getElementById("adminForm").reset();
+            document.getElementById("progIcon").value = "fa-file-zipper";
+
+            const submitBtn = document.getElementById("submitBtn");
+            submitBtn.innerHTML = `<i class="fas fa-plus-circle"></i> Добавить программу`;
+            submitBtn.classList.remove("btn-update");
+
+            document.getElementById("cancelEditBtn").style.display = "none";
+            document.getElementById("adminSub").textContent = "Добавляйте и удаляйте программы";
+        }
+
+        function saveProgram(e) {
             e.preventDefault();
 
             const name = document.getElementById("progName").value.trim();
@@ -1271,28 +1421,52 @@
                 return;
             }
 
-            const newProgram = {
-                id: nextId++,
-                name,
-                version,
-                size,
-                description: desc,
-                icon,
-                link,
-                category,
-                downloads,
-                image: image || ""
-            };
+            const editId = document.getElementById("editId").value;
 
-            programs.push(newProgram);
-            savePrograms(programs);
-            renderAdminList();
-            renderCards(programs);
+            if (editId) {
+                // ===== РЕДАКТИРОВАНИЕ =====
+                const index = programs.findIndex(p => p.id === parseInt(editId));
+                if (index !== -1) {
+                    programs[index] = {
+                        ...programs[index],
+                        name,
+                        version,
+                        size,
+                        description: desc,
+                        icon,
+                        link,
+                        category,
+                        downloads,
+                        image: image || ""
+                    };
+                    savePrograms(programs);
+                    cancelEdit();
+                    renderAdminList();
+                    renderCards(programs);
+                    alert("✅ Программа обновлена!");
+                }
+            } else {
+                // ===== ДОБАВЛЕНИЕ =====
+                const newProgram = {
+                    id: nextId++,
+                    name,
+                    version,
+                    size,
+                    description: desc,
+                    icon,
+                    link,
+                    category,
+                    downloads,
+                    image: image || ""
+                };
 
-            document.getElementById("adminForm").reset();
-            document.getElementById("progIcon").value = "fa-file-zipper";
-
-            alert("✅ Программа добавлена!");
+                programs.push(newProgram);
+                savePrograms(programs);
+                cancelEdit();
+                renderAdminList();
+                renderCards(programs);
+                alert("✅ Программа добавлена!");
+            }
         }
 
         function deleteProgram(id) {
@@ -1428,8 +1602,11 @@
         function tryLogin() {
             const pass = document.getElementById("loginPassword").value;
             if (pass === ADMIN_PASSWORD) {
+                isAdmin = true;
                 closeLogin();
                 showPage("admin");
+                renderCards(programs); // Обновляем карточки с кнопками
+                alert("🔓 Вы вошли как администратор! Теперь на карточках программ есть кнопка 'Редактировать'.");
             } else {
                 document.getElementById("loginError").style.display = "block";
                 document.getElementById("loginPassword").value = "";
