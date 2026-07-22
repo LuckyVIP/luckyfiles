@@ -765,100 +765,85 @@
         renderHome();
         console.log("🍀 LuckyFiles — главная страница загружена!");
     </script>
+
     <!-- ==============================================================
-    БЛОК 1: ИНВЕСТИЦИИ (счётчик монет + обвал Хамстеркомбатиков)
+    БЛОКИ: ИНВЕСТИЦИИ + НАЧЕКАНЬ (в 2 колонки)
     ============================================================== -->
     <div style="margin-top: 4rem; padding-top: 2rem; border-top: 2px solid var(--border);">
-        <div style="max-width: 360px; margin: 0 auto;">
+        
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; max-width:660px; margin:0 auto;">
 
-            <div id="investCol" style="display:flex; flex-direction:column; align-items:center; gap:0.4rem; padding:1.8rem 1.5rem; background:var(--bg-card); border-radius:28px; border:2px solid var(--border); box-shadow:0 8px 28px var(--shadow); transition: all 0.3s ease;">
+            <!-- ===== ЛЕВЫЙ БЛОК: ИНВЕСТИЦИИ ===== -->
+            <div id="investCol" style="display:flex; flex-direction:column; align-items:center; gap:0.3rem; padding:1.5rem 1rem; background:var(--bg-card); border-radius:24px; border:2px solid var(--border); box-shadow:0 8px 24px var(--shadow); transition: all 0.3s ease;">
 
-                <!-- Заголовок -->
-                <div style="font-size:1.3rem; font-weight:700; color:var(--text-secondary); letter-spacing:0.5px; margin-bottom:0.2rem;">
+                <div style="font-size:1.1rem; font-weight:700; color:var(--text-secondary); letter-spacing:0.5px;">
                     📈 Инвестиции
                 </div>
 
-                <!-- Картинка (кликабельная) -->
-                <div id="investTap" style="cursor:pointer; transition:transform 0.12s ease; max-width:140px; width:100%; border-radius:20px; overflow:hidden; border:2px solid var(--border); box-shadow: 0 4px 20px var(--shadow-hover);">
+                <div id="investTap" style="cursor:pointer; transition:transform 0.12s ease; max-width:110px; width:100%; border-radius:16px; overflow:hidden; border:2px solid var(--border); box-shadow: 0 4px 16px var(--shadow-hover);">
                     <img id="investImg" src="ССЫЛКА_НА_ТВОЮ_КАРТИНКУ_1" alt="Инвестиции" style="width:100%; display:block; user-select:none; -webkit-user-drag:none;" />
                 </div>
 
-                <!-- Счётчик монет -->
-                <div style="text-align:center; margin-top:0.2rem;">
-                    <span style="font-size:2.4rem; font-weight:800; color:var(--gradient-start);" id="investCounter">0</span>
-                    <span style="color:var(--text-muted); font-size:0.9rem; margin-left:6px;">монет</span>
+                <div style="text-align:center;">
+                    <span style="font-size:2rem; font-weight:800; color:var(--gradient-start);" id="investCounter">0</span>
+                    <span style="color:var(--text-muted); font-size:0.8rem; margin-left:4px;">монет</span>
                 </div>
 
-                <!-- Блок для сообщения об обвале -->
-                <div id="investMessage" style="min-height:3rem; font-size:1rem; font-weight:700; text-align:center; margin-top:0.2rem; line-height:1.4;"></div>
+                <div id="investMessage" style="min-height:2.6rem; font-size:0.85rem; font-weight:700; text-align:center; margin-top:0.1rem; line-height:1.3;"></div>
             </div>
 
-        </div>
-    </div>
+            <!-- ===== ПРАВЫЙ БЛОК: НАЧЕКАНЬ ===== -->
+            <div id="chekanCol" style="display:flex; flex-direction:column; align-items:center; gap:0.3rem; padding:1.5rem 1rem; background:var(--bg-card); border-radius:24px; border:2px solid var(--border); box-shadow:0 8px 24px var(--shadow); transition: all 0.3s ease;">
 
-    <!-- ==============================================================
-    БЛОК 2: НАЧЕКАНЬ (счётчик чекан + разьеб монитора)
-    ============================================================== -->
-    <div style="margin-top: 2.5rem; padding-top: 1rem;">
-        <div style="max-width: 360px; margin: 0 auto;">
-
-            <div id="chekanCol" style="display:flex; flex-direction:column; align-items:center; gap:0.4rem; padding:1.8rem 1.5rem; background:var(--bg-card); border-radius:28px; border:2px solid var(--border); box-shadow:0 8px 28px var(--shadow); transition: all 0.3s ease;">
-
-                <!-- Заголовок -->
-                <div style="font-size:1.3rem; font-weight:700; color:var(--text-secondary); letter-spacing:0.5px; margin-bottom:0.2rem;">
+                <div style="font-size:1.1rem; font-weight:700; color:var(--text-secondary); letter-spacing:0.5px;">
                     💰 Начеканить
                 </div>
 
-                <!-- Картинка (кликабельная) -->
-                <div id="chekanTap" style="cursor:pointer; transition:transform 0.12s ease; max-width:140px; width:100%; border-radius:20px; overflow:hidden; border:2px solid var(--border); box-shadow: 0 4px 20px var(--shadow-hover);">
+                <div id="chekanTap" style="cursor:pointer; transition:transform 0.12s ease; max-width:110px; width:100%; border-radius:16px; overflow:hidden; border:2px solid var(--border); box-shadow: 0 4px 16px var(--shadow-hover);">
                     <img id="chekanImg" src="ССЫЛКА_НА_ТВОЮ_КАРТИНКУ_2" alt="Начеканить" style="width:100%; display:block; user-select:none; -webkit-user-drag:none;" />
                 </div>
 
-                <!-- Счётчик чекан -->
-                <div style="text-align:center; margin-top:0.2rem;">
-                    <span style="font-size:2.4rem; font-weight:800; color:#f59e0b;" id="chekanCounter">0</span>
-                    <span style="color:var(--text-muted); font-size:0.9rem; margin-left:6px;">чекан</span>
+                <div style="text-align:center;">
+                    <span style="font-size:2rem; font-weight:800; color:#f59e0b;" id="chekanCounter">0</span>
+                    <span style="color:var(--text-muted); font-size:0.8rem; margin-left:4px;">чекан</span>
                 </div>
 
-                <!-- Блок для сообщения о разьебе -->
-                <div id="chekanMessage" style="min-height:3rem; font-size:1rem; font-weight:700; text-align:center; margin-top:0.2rem; line-height:1.4;"></div>
+                <div id="chekanMessage" style="min-height:2.6rem; font-size:0.85rem; font-weight:700; text-align:center; margin-top:0.1rem; line-height:1.3;"></div>
             </div>
 
         </div>
-    </div>
 
-    <!-- КНОПКА СБРОСА (общая) -->
-    <div style="text-align:center; margin-top:2rem;">
-        <button onclick="resetAllGames()" style="padding: 0.3rem 1.4rem; background: transparent; color: var(--text-muted); border: 1px solid var(--border); border-radius: 30px; font-size: 0.75rem; cursor: pointer; transition: 0.2s; font-family: inherit; opacity:0.5;">
-            <i class="fas fa-undo"></i> сбросить всё
-        </button>
+        <!-- КНОПКА СБРОСА -->
+        <div style="text-align:center; margin-top:1.8rem;">
+            <button onclick="resetAllGames()" style="padding: 0.25rem 1.2rem; background: transparent; color: var(--text-muted); border: 1px solid var(--border); border-radius: 30px; font-size: 0.7rem; cursor: pointer; transition: 0.2s; font-family: inherit; opacity:0.4;">
+                <i class="fas fa-undo"></i> сбросить всё
+            </button>
+        </div>
+
     </div>
 
     <!-- ================================================================
-    СКРИПТ ДЛЯ ДВУХ БЛОКОВ (с разными надписями и картинками)
+    СКРИПТ (ТОТ ЖЕ САМЫЙ, НО С ДРУГИМИ КЛЮЧАМИ)
     ================================================================ -->
     <script>
         // ================================================================
         // 1. НАСТРОЙКИ (ЗАМЕНИ ССЫЛКИ НА СВОИ КАРТИНКИ)
         // ================================================================
 
-        // --- Для блока "Инвестиции" ---
-        const INVEST_DEFAULT_IMG = 'https://coinspot.io/wp-content/uploads/2024/09/snimok-ekrana-2024-09-15-v-17.03.12.png';   // обычная картинка
-        const INVEST_WIN_IMG    = 'https://i.ytimg.com/vi/qbXsbai8Xzo/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDIQkIudKNpuujWFZ78jD_QzdQvsg';    // картинка при обвале
-
-        // --- Для блока "Начеканить" ---
-        const CHEKAN_DEFAULT_IMG = 'https://www.exegate.ru/images/catalogue/preview2/294344_2m.jpg';   // обычная картинка
-        const CHEKAN_WIN_IMG     = 'https://thumbs.dreamstime.com/b/lcd-238308908.jpg';  // картинка при разьебе
+        const INVEST_DEFAULT_IMG = 'ССЫЛКА_НА_ТВОЮ_КАРТИНКУ_1';
+        const INVEST_WIN_IMG     = 'ССЫЛКА_НА_КАРТИНКУ_ОБВАЛА';
+        const CHEKAN_DEFAULT_IMG = 'ССЫЛКА_НА_ТВОЮ_КАРТИНКУ_2';
+        const CHEKAN_WIN_IMG     = 'ССЫЛКА_НА_КАРТИНКУ_РАЗЬЕБА';
 
         // ================================================================
-        // 2. КЛЮЧИ ДЛЯ ХРАНЕНИЯ СЧЁТЧИКОВ (localStorage)
+        // 2. КЛЮЧИ ДЛЯ ХРАНЕНИЯ
         // ================================================================
 
         const INVEST_KEY = 'luckyfiles_invest_count';
         const CHEKAN_KEY = 'luckyfiles_chekan_count';
 
         // ================================================================
-        // 3. ФУНКЦИИ РАБОТЫ СО СЧЁТЧИКАМИ
+        // 3. ФУНКЦИИ СЧЁТЧИКОВ
         // ================================================================
 
         function getCount(key) {
@@ -876,36 +861,31 @@
         }
 
         // ================================================================
-        // 4. СБРОС ВСЕГО
+        // 4. СБРОС
         // ================================================================
 
         let investLocked = false;
         let chekanLocked = false;
 
         function resetAllGames() {
-            if (confirm('Сбросить все счётчики и вернуть картинки?')) {
-                // Сбрасываем счётчики
+            if (confirm('Сбросить всё?')) {
                 setCount(INVEST_KEY, 0);
                 setCount(CHEKAN_KEY, 0);
                 updateAllCounters();
 
-                // Возвращаем картинки
                 document.getElementById('investImg').src = INVEST_DEFAULT_IMG;
                 document.getElementById('chekanImg').src = CHEKAN_DEFAULT_IMG;
 
-                // Убираем сообщения
                 document.getElementById('investMessage').innerHTML = '';
                 document.getElementById('chekanMessage').innerHTML = '';
 
-                // Сбрасываем рамки и тени
-                const investCol = document.getElementById('investCol');
-                const chekanCol = document.getElementById('chekanCol');
-                investCol.style.borderColor = 'var(--border)';
-                investCol.style.boxShadow = '0 8px 28px var(--shadow)';
-                chekanCol.style.borderColor = 'var(--border)';
-                chekanCol.style.boxShadow = '0 8px 28px var(--shadow)';
+                const ic = document.getElementById('investCol');
+                const cc = document.getElementById('chekanCol');
+                ic.style.borderColor = 'var(--border)';
+                ic.style.boxShadow = '0 8px 24px var(--shadow)';
+                cc.style.borderColor = 'var(--border)';
+                cc.style.boxShadow = '0 8px 24px var(--shadow)';
 
-                // Разблокируем
                 investLocked = false;
                 chekanLocked = false;
             }
@@ -919,25 +899,19 @@
             if (investLocked) return;
             investLocked = true;
 
-            // Меняем картинку
             document.getElementById('investImg').src = INVEST_WIN_IMG;
-
-            // Показываем надпись про обвал
             document.getElementById('investMessage').innerHTML = `
-                <span style="color:#ef4444; font-size:1.1rem; display:block; animation:pulse 0.6s ease 3; line-height:1.4;">
+                <span style="color:#ef4444; font-size:1rem; display:block; animation:pulse 0.6s ease 3; line-height:1.3;">
                     💥 ХАМСТЕРКОМБАТИКИ<br />ОБВАЛИЛИСЬ В ЦЕНЕ!
                 </span>
-                <span style="color:#94a3b8; font-size:0.7rem; font-weight:400; display:block; margin-top:2px;">
+                <span style="color:#94a3b8; font-size:0.65rem; font-weight:400; display:block; margin-top:1px;">
                     (график ушёл в минус 📉)
                 </span>
             `;
 
-            // Красная рамка
             const col = document.getElementById('investCol');
             col.style.borderColor = '#ef4444';
             col.style.boxShadow = '0 0 30px rgba(239,68,68,0.25)';
-
-            // Тряска
             col.style.animation = 'shake 0.5s ease';
             setTimeout(() => { col.style.animation = ''; }, 600);
 
@@ -948,25 +922,19 @@
             if (chekanLocked) return;
             chekanLocked = true;
 
-            // Меняем картинку
             document.getElementById('chekanImg').src = CHEKAN_WIN_IMG;
-
-            // Показываем надпись про разьеб
             document.getElementById('chekanMessage').innerHTML = `
-                <span style="color:#ef4444; font-size:1.1rem; display:block; animation:pulse 0.6s ease 3; line-height:1.4;">
+                <span style="color:#ef4444; font-size:1rem; display:block; animation:pulse 0.6s ease 3; line-height:1.3;">
                     💥 ПОЗДРАВЛЯЮ!<br />ВЫ РАЗЬЕБАЛИ МОНИТОР!
                 </span>
-                <span style="color:#94a3b8; font-size:0.7rem; font-weight:400; display:block; margin-top:2px;">
+                <span style="color:#94a3b8; font-size:0.65rem; font-weight:400; display:block; margin-top:1px;">
                     (техподдержка в шоке 🖥️💀)
                 </span>
             `;
 
-            // Красная рамка
             const col = document.getElementById('chekanCol');
             col.style.borderColor = '#ef4444';
             col.style.boxShadow = '0 0 30px rgba(239,68,68,0.25)';
-
-            // Тряска
             col.style.animation = 'shake 0.5s ease';
             setTimeout(() => { col.style.animation = ''; }, 600);
 
@@ -979,46 +947,36 @@
 
         function handleInvestTap() {
             if (investLocked) return;
-
             const current = getCount(INVEST_KEY);
             setCount(INVEST_KEY, current + 1);
             updateAllCounters();
 
-            // Анимация нажатия
             const el = document.getElementById('investTap');
             el.style.transform = 'scale(0.88)';
             setTimeout(() => { el.style.transform = 'scale(1)'; }, 150);
 
-            // Шанс 3% на обвал
-            if (Math.random() < 0.03) {
-                triggerInvestWin();
-            }
+            if (Math.random() < 0.03) triggerInvestWin();
         }
 
         function handleChekanTap() {
             if (chekanLocked) return;
-
             const current = getCount(CHEKAN_KEY);
             setCount(CHEKAN_KEY, current + 1);
             updateAllCounters();
 
-            // Анимация нажатия
             const el = document.getElementById('chekanTap');
             el.style.transform = 'scale(0.88)';
             setTimeout(() => { el.style.transform = 'scale(1)'; }, 150);
 
-            // Шанс 3% на разьеб
-            if (Math.random() < 0.03) {
-                triggerChekanWin();
-            }
+            if (Math.random() < 0.03) triggerChekanWin();
         }
 
         // ================================================================
-        // 7. АНИМАЦИИ (добавляем в head)
+        // 7. АНИМАЦИИ
         // ================================================================
 
-        const styleSheet2 = document.createElement('style');
-        styleSheet2.textContent = `
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = `
             @keyframes shake {
                 0%, 100% { transform: translateX(0); }
                 10% { transform: translateX(-8px) rotate(-1deg); }
@@ -1032,7 +990,7 @@
                 50% { transform: scale(1.08); }
             }
         `;
-        document.head.appendChild(styleSheet2);
+        document.head.appendChild(styleSheet);
 
         // ================================================================
         // 8. ПОДПИСКА НА СОБЫТИЯ
@@ -1047,9 +1005,7 @@
 
         updateAllCounters();
 
-        console.log('💸 Инвестиции + Начеканить запущены!');
-        console.log('📉 Шанс обвала Хамстеркомбатиков: 3%');
-        console.log('💥 Шанс разьебать монитор: 3%');
+        console.log('💸 Инвестиции + Начеканить (в ряд) запущены!');
     </script>
     
 </body>
