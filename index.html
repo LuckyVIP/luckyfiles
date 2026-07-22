@@ -802,8 +802,34 @@
         </div>
     </div>
 
+      <!-- ==============================================================
+    ТАП-СЧЁТЧИК (только картинка + счётчик)
+    ============================================================== -->
+    <div style="margin-top: 4rem; padding-top: 2rem; border-top: 2px solid var(--border);">
+        
+        <div style="display:flex; flex-direction:column; align-items:center; gap:0.8rem;">
+
+            <!-- КАРТИНКА (кликабельная) -->
+            <div id="tapImage" style="cursor:pointer; transition:transform 0.12s ease; max-width:160px; width:100%; border-radius:20px; overflow:hidden; box-shadow: 0 8px 28px var(--shadow-hover); border: 2px solid var(--border);">
+                <img src="https://i.postimg.cc/Y0pK8C0C/Nikita-red-back.png" alt="Тап-картинка" style="width:100%; display:block; user-select:none; -webkit-user-drag:none;" />
+            </div>
+
+            <!-- СЧЁТЧИК -->
+            <div style="text-align:center;">
+                <span style="font-size:2.8rem; font-weight:800; color:var(--gradient-start); letter-spacing:-1px;" id="tapCounter">0</span>
+                <span style="color:var(--text-muted); font-size:0.9rem; margin-left:6px;">нажатий</span>
+            </div>
+
+            <!-- КНОПКА СБРОСА (маленькая, не мешает) -->
+            <button onclick="resetTap()" style="padding: 0.2rem 1rem; background: transparent; color: var(--text-muted); border: 1px solid var(--border); border-radius: 30px; font-size: 0.7rem; cursor: pointer; transition: 0.2s; font-family: inherit; opacity:0.5;">
+                <i class="fas fa-undo"></i> сброс
+            </button>
+
+        </div>
+    </div>
+
     <!-- ================================================================
-    СКРИПТ ДЛЯ ТАП-СЧЁТЧИКА (добавить в существующий <script>)
+    СКРИПТ ДЛЯ ТАП-СЧЁТЧИКА
     ================================================================ -->
     <script>
         // ТАП-СЧЁТЧИК
@@ -828,9 +854,9 @@
             setTapCount(newCount);
             updateTapDisplay();
 
-            // Анимация картинки (лёгкий "клик")
+            // Анимация нажатия
             const img = document.getElementById('tapImage');
-            img.style.transform = 'scale(0.92)';
+            img.style.transform = 'scale(0.90)';
             setTimeout(() => {
                 img.style.transform = 'scale(1)';
             }, 150);
@@ -843,10 +869,10 @@
             }
         }
 
-        // При загрузке страницы показываем сохранённое значение
+        // Загружаем счётчик при старте
         document.addEventListener('DOMContentLoaded', updateTapDisplay);
 
-        // Также добавляем событие на картинку (клик по ней тоже работает)
+        // Клик по картинке
         document.getElementById('tapImage').addEventListener('click', handleTap);
     </script>
 
