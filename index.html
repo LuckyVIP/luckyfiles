@@ -857,45 +857,7 @@
             .audio-player .volume-slider {
                 width: 30px;
             }
-        }
-                    /* ===== ФОН С КАРТИНКОЙ ===== */
-        body {
-            background-image: url('https://i.pinimg.com/originals/ca/75/80/ca7580cc4c1617bef9ed13be3d9088d2.gif');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            min-height: 100vh;
-        }
-
-        /* Затемнение поверх фона */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: -1;
-        }
-
-        /* Делаем карточки полупрозрачными */
-        .navbar,
-        .game-card,
-        .social-card,
-        .content-wrapper,
-        .audio-player,
-        #investCol,
-        #chekanCol,
-        .gallery-item,
-        .hero-portrait {
-            background: rgba(255, 255, 255, 0.08) !important;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-color: rgba(255, 255, 255, 0.15);
-        }
-
-        [data-theme="dark"] body::before {
-            background: rgba(0, 0, 0, 0.7);
-        }
-
+   
     </style>
 </head>
 <body>
