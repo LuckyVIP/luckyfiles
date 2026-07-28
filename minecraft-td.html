@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LuckyFiles — Minecraft TD</title>
+
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/Y0pK8C0C/Nikita-red-back.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <style>
+        :root {
+            --bg: #f6f9fc;
+            --bg-card: #ffffff;
+            --text: #1e293b;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --shadow: rgba(0, 0, 0, 0.04);
+            --shadow-hover: rgba(0, 0, 0, 0.08);
+            --input-bg: #ffffff;
+            --gradient-start: #3b82f6;
+            --gradient-end: #8b5cf6;
+            --btn-bg: #1e293b;
+            --btn-text: #ffffff;
+            --btn-hover: #0f172a;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0a0a0f;
+            --bg-card: #18181f;
+            --text: #e9e9f0;
+            --text-secondary: #a0a0b8;
+            --text-muted: #6a6a82;
+            --border: #2a2a35;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --shadow-hover: rgba(0, 0, 0, 0.5);
+            --input-bg: #22222b;
+            --gradient-start: #4f8df7;
+            --gradient-end: #9b6cf7;
+            --btn-bg: #3b3b4a;
+            --btn-text: #ffffff;
+            --btn-hover: #4f4f62;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Inter", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            transition: background 0.3s, color 0.3s;
+            padding: 2rem 1rem;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+            user-select: none;
+            text-decoration: none;
+        }
+        .nav-logo i { -webkit-text-fill-color: var(--gradient-start); margin-right: 6px; }
+
+        .nav-controls { display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+        .theme-toggle, .nav-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            font-family: inherit;
+        }
+        .theme-toggle:hover, .nav-btn:hover { background: var(--border); transform: scale(1.02); }
+        .nav-btn.active { background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end)); color: white; border: none; }
+
+        .audio-player {
+            position: fixed;
+            bottom: 1.2rem;
+            left: 1.2rem;
+            z-index: 999;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 0.5rem 0.9rem;
+            box-shadow: 0 8px 30px var(--shadow-hover);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            backdrop-filter: blur(8px);
+            transition: 0.2s;
+        }
+        .audio-player:hover { transform: scale(1.02); }
+        .audio-player .play-btn {
+            background: transparent;
+            border: none;
+            color: var(--gradient-start);
+            font-size: 1.4rem;
+            cursor: pointer;
+            padding: 0.2rem 0.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .audio-player .volume-slider { width: 80px; height: 4px; -webkit-appearance: none; appearance: none; background: var(--border); border-radius: 4px; outline: none; }
+        .audio-player .volume-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--gradient-start); cursor: pointer; }
+        .audio-player .volume-icon { color: var(--text-muted); font-size: 0.8rem; opacity: 0.7; }
+
+        .content-wrapper {
+            background: var(--bg-card);
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            box-shadow: 0 8px 28px var(--shadow);
+            transition: 0.3s;
+            min-height: 300px;
+            position: relative;
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .game-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stats { display: flex; gap: 1.2rem; flex-wrap: wrap; font-weight: 600; font-size: 0.95rem; }
+        .stat { display: flex; align-items: center; gap: 6px; background: var(--input-bg); padding: 0.4rem 0.9rem; border-radius: 12px; border: 1px solid var(--border); }
+        .stat.money { color: #eab308; }
+        .stat.lives { color: #ef4444; }
+        .stat.wave { color: #3b82f6; }
+
+        .game-area { display: flex; gap: 1rem; flex-wrap: wrap; }
+        #gameCanvas {
+            background: #5b8c3e;
+            border-radius: 16px;
+            border: 3px solid #3d6b28;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.15);
+            cursor: crosshair;
+            max-width: 100%;
+            display: block;
+        }
+        .sidebar { flex: 1; min-width: 220px; display: flex; flex-direction: column; gap: 0.8rem; }
+
+        .tower-btn {
+            background: var(--input-bg);
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            padding: 0.7rem 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: inherit;
+            color: var(--text);
+            font-weight: 600;
+        }
+        .tower-btn:hover { border-color: var(--gradient-start); transform: translateY(-2px); }
+        .tower-btn.selected { border-color: #22c55e; background: rgba(34, 197, 94, 0.12); box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.3); }
+        .tower-btn .icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: white; flex-shrink: 0; }
+        .tower-btn .info { flex: 1; text-align: left; }
+        .tower-btn .name { font-size: 0.95rem; }
+        .tower-btn .cost { font-size: 0.8rem; color: var(--text-muted); }
+
+        .controls { display: flex; gap: 0.6rem; margin-top: 0.5rem; flex-wrap: wrap; }
+        .ctrl-btn {
+            flex: 1;
+            padding: 0.7rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.2s;
+            min-width: 80px;
+        }
+        .ctrl-btn.start { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; }
+        .ctrl-btn.start:hover { filter: brightness(1.1); }
+        .ctrl-btn.start:disabled { opacity: 0.5; cursor: not-allowed; filter: none; }
+        .ctrl-btn.sell { background: var(--btn-bg); color: var(--btn-text); }
+        .ctrl-btn.sell:hover { background: var(--btn-hover); }
+        .ctrl-btn.upgrade { background: var(--warning); color: #1e293b; }
+        .ctrl-btn.upgrade:hover { filter: brightness(1.05); }
+
+        .message {
+            text-align: center;
+            padding: 0.6rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            min-height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .message.info { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
+        .message.success { background: rgba(34, 197, 94, 0.15); color: #16a34a; }
+        .message.danger { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            z-index: 10;
+        }
+        .overlay.show { display: flex; }
+        .overlay-box {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 320px;
+            border: 1px solid var(--border);
+        }
+        .overlay-box h2 { margin-bottom: 0.8rem; font-size: 1.6rem; }
+        .overlay-box p { color: var(--text-secondary); margin-bottom: 1.2rem; }
+        .overlay-box button { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border: none; padding: 0.7rem 1.5rem; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 1rem; font-family: inherit; }
+
+        .leaderboard {
+            margin-top: 1rem;
+            padding: 0.8rem 1rem;
+            background: var(--bg);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            max-height: 120px;
+            overflow-y: auto;
+        }
+        .leaderboard h3 {
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .leaderboard h3 i { color: #ffd700; }
+        .leaderboard table { width: 100%; border-collapse: collapse; font-size: 0.7rem; }
+        .leaderboard th { text-align: left; color: var(--text-muted); font-weight: 600; padding-bottom: 3px; border-bottom: 1px solid var(--border); }
+        .leaderboard td { padding: 3px 0; border-bottom: 1px solid var(--border); }
+        .leaderboard .rank { width: 25px; text-align: center; }
+        .leaderboard .rank.gold { color: #ffd700; }
+        .leaderboard .rank.silver { color: #c0c0c0; }
+        .leaderboard .rank.bronze { color: #cd7f32; }
+        .leaderboard .empty { color: var(--text-muted); text-align: center; padding: 0.5rem 0; font-size: 0.7rem; }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem 0.8rem; padding-bottom: 5rem; }
+            .navbar { flex-direction: column; align-items: stretch; gap: 0.8rem; margin-bottom: 1.5rem; }
+            .nav-logo { text-align: center; font-size: 1.6rem; }
+            .nav-controls { justify-content: center; gap: 0.5rem; }
+            .theme-toggle, .nav-btn { font-size: 0.8rem; padding: 0.4rem 0.8rem; }
+            .content-wrapper { padding: 1rem; border-radius: 16px; }
+            .game-title { font-size: 1.3rem; }
+            .stats { gap: 0.6rem; font-size: 0.85rem; }
+            .audio-player { bottom: 0.8rem; left: 0.8rem; padding: 0.4rem 0.7rem; }
+            .audio-player .volume-slider { width: 50px; }
+        }
+        @media (max-width: 480px) {
+            .content-wrapper { padding: 0.8rem; }
+            .audio-player .volume-slider { width: 40px; }
+            .tower-btn { padding: 0.5rem 0.7rem; }
+            .tower-btn .icon { width: 30px; height: 30px; font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <a href="index.html" class="nav-logo"><i class="fas fa-clover"></i> LuckyFiles</a>
+            <div class="nav-controls">
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon" id="themeIcon"></i> <span id="themeLabel">Тёмная</span>
+                </button>
+                <a href="index.html" class="nav-btn" id="navIndex"><i class="fas fa-home"></i> Главная</a>
+                <a href="programs.html" class="nav-btn" id="navPrograms"><i class="fas fa-th-list"></i> Программы</a>
+                <a href="modpacks.html" class="nav-btn" id="navModpacks"><i class="fas fa-cubes"></i> Модпаки</a>
+                <a href="geometrydash.html" class="nav-btn" id="navGeometry"><i class="fas fa-gamepad"></i> Geometry</a>
+                <a href="minequest.html" class="nav-btn" id="navMineQuest"><i class="fas fa-pickaxe"></i> MineQuest</a>
+            </div>
+        </nav>
+
+        <div class="content-wrapper">
+            <div class="game-header">
+                <div class="game-title">⛏ Minecraft Tower Defense</div>
+                <div class="stats">
+                    <div class="stat money"><i class="fas fa-coins"></i> <span id="money">120</span></div>
+                    <div class="stat lives"><i class="fas fa-heart"></i> <span id="lives">15</span></div>
+                    <div class="stat wave"><i class="fas fa-flag"></i> Волна <span id="wave">0</span></div>
+                </div>
+            </div>
+
+            <div class="game-area">
+                <div style="position: relative; flex-shrink: 0;">
+                    <canvas id="gameCanvas" width="640" height="480"></canvas>
+                    <div class="overlay" id="overlay">
+                        <div class="overlay-box">
+                            <h2 id="overlayTitle">Победа!</h2>
+                            <p id="overlayText">Ты защитил деревню от всех волн!</p>
+                            <button onclick="restartGame()">Играть снова</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar">
+                    <div class="message info" id="message">Выбери башню и кликни по карте</div>
+
+                    <button class="tower-btn selected" data-type="archer" onclick="selectTower('archer')">
+                        <div class="icon" style="background:#8B5A2B;">🏹</div>
+                        <div class="info"><div class="name">Лучник</div><div class="cost">60 🪙</div></div>
+                    </button>
+                    <button class="tower-btn" data-type="cannon" onclick="selectTower('cannon')">
+                        <div class="icon" style="background:#4B5563;">💣</div>
+                        <div class="info"><div class="name">Пушка</div><div class="cost">110 🪙</div></div>
+                    </button>
+                    <button class="tower-btn" data-type="fire" onclick="selectTower('fire')">
+                        <div class="icon" style="background:#DC2626;">🔥</div>
+                        <div class="info"><div class="name">Огнемёт</div><div class="cost">140 🪙</div></div>
+                    </button>
+                    <button class="tower-btn" data-type="ice" onclick="selectTower('ice')">
+                        <div class="icon" style="background:#0EA5E9;">❄️</div>
+                        <div class="info"><div class="name">Ледяная</div><div class="cost">120 🪙</div></div>
+                    </button>
+                    <button class="tower-btn" data-type="mage" onclick="selectTower('mage')">
+                        <div class="icon" style="background:#8B5CF6;">🔮</div>
+                        <div class="info"><div class="name">Маг</div><div class="cost">170 🪙</div></div>
+                    </button>
+                    <button class="tower-btn" data-type="tesla" onclick="selectTower('tesla')">
+                        <div class="icon" style="background:#EAB308;">⚡</div>
+                        <div class="info"><div class="name">Тесла</div><div class="cost">200 🪙</div></div>
+                    </button>
+                    <button class="tower-btn" data-type="sniper" onclick="selectTower('sniper')">
+                        <div class="icon" style="background:#1F2937;">🎯</div>
+                        <div class="info"><div class="name">Снайпер</div><div class="cost">250 🪙</div></div>
+                    </button>
+
+                    <div class="controls">
+                        <button class="ctrl-btn start" id="startBtn" onclick="startWave()">▶ Волна</button>
+                        <button class="ctrl-btn sell" onclick="sellMode = !sellMode; updateMessage()">💰 Продать</button>
+                        <button class="ctrl-btn upgrade" onclick="upgradeMode = !upgradeMode; updateMessage()">⬆ Улучшить</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="leaderboard" id="leaderboard">
+                <h3><i class="fas fa-trophy"></i> Рекорды волн</h3>
+                <div id="leaderboardContent"><div class="empty">Загрузка...</div></div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="bgMusic" loop preload="auto">
+        <source src="https://cdn.pixabay.com/audio/2022/02/02/audio_fc4f3d0a16.mp3" type="audio/mpeg" />
+        <source src="https://www.bensound.com/bensound-music/bensound-slowmotion.mp3" type="audio/mpeg" />
+    </audio>
+
+    <div class="audio-player" id="audioPlayer">
+        <button class="play-btn" id="playBtn" onclick="toggleMusic()">
+            <i class="fas fa-play" id="playIcon"></i>
+        </button>
+        <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.05" value="0.7" />
+        <span class="volume-icon"><i class="fas fa-volume-up"></i></span>
+    </div>
+
+    <script>
+        // ===== ТЕМА И МУЗЫКА =====
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute("data-theme");
+            const newTheme = current === "dark" ? "light" : "dark";
+            html.setAttribute("data-theme", newTheme);
+            const icon = document.getElementById("themeIcon");
+            const label = document.getElementById("themeLabel");
+            if (newTheme === "dark") { icon.className = "fas fa-sun"; label.textContent = "Светлая"; }
+            else { icon.className = "fas fa-moon"; label.textContent = "Тёмная"; }
+            localStorage.setItem("luckyfiles_theme", newTheme);
+        }
+        const savedTheme = localStorage.getItem("luckyfiles_theme");
+        if (savedTheme === "dark") {
+            document.documentElement.setAttribute("data-theme", "dark");
+            document.getElementById("themeIcon").className = "fas fa-sun";
+            document.getElementById("themeLabel").textContent = "Светлая";
+        }
+
+        const bgMusic = document.getElementById('bgMusic');
+        const playBtn = document.getElementById('playBtn');
+        const playIcon = document.getElementById('playIcon');
+        const volumeSlider = document.getElementById('volumeSlider');
+        let isMusicPlaying = false;
+        const musicState = localStorage.getItem('luckyfiles_music');
+        if (musicState === 'playing') { bgMusic.play().catch(() => {}); isMusicPlaying = true; playIcon.className = 'fas fa-pause'; }
+        const savedVolume = localStorage.getItem('luckyfiles_volume');
+        if (savedVolume !== null) { bgMusic.volume = parseFloat(savedVolume); volumeSlider.value = savedVolume; }
+        function toggleMusic() {
+            if (isMusicPlaying) { bgMusic.pause(); isMusicPlaying = false; playIcon.className = 'fas fa-play'; localStorage.setItem('luckyfiles_music', 'paused'); }
+            else { bgMusic.play().catch(() => alert('Не удалось запустить музыку')); isMusicPlaying = true; playIcon.className = 'fas fa-pause'; localStorage.setItem('luckyfiles_music', 'playing'); }
+        }
+        volumeSlider.addEventListener('input', function() { bgMusic.volume = parseFloat(this.value); localStorage.setItem('luckyfiles_volume', this.value); });
+        document.addEventListener('click', function firstClick() {
+            if (!isMusicPlaying && localStorage.getItem('luckyfiles_music') === 'playing') {
+                bgMusic.play().catch(() => {}); isMusicPlaying = true; playIcon.className = 'fas fa-pause';
+            }
+            document.removeEventListener('click', firstClick);
+        }, { once: true });
+
+        // ===== ЛИДЕРБОРД =====
+        const BIN_ID = '6a68a71bf5f4af5e29ccd013';
+        const MASTER_KEY = '$2a$10$xSEc0ce59cp5pUNfg1.OROWeV1khQGYYXzxzy4tEhYCczjH42R0Uq';
+        const API_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+        const TD_KEY = 'td_records';
+
+        let playerName = localStorage.getItem('td_player_name') || '';
+
+        async function loadLeaderboard() {
+            try {
+                const res = await fetch(API_URL, { headers: { 'X-Master-Key': MASTER_KEY } });
+                const data = await res.json();
+                const records = data.record[TD_KEY] || [];
+                renderLeaderboard(records);
+                return records;
+            } catch(e) {
+                document.getElementById('leaderboardContent').innerHTML = `<div class="empty">❌ Ошибка загрузки</div>`;
+                return [];
+            }
+        }
+
+        function renderLeaderboard(records) {
+            const container = document.getElementById('leaderboardContent');
+            if (!records || records.length === 0) {
+                container.innerHTML = `<div class="empty">Пока нет рекордов. Будь первым! 🏆</div>`;
+                return;
+            }
+            const sorted = [...records].sort((a,b) => b.score - a.score).slice(0,10);
+            let html = `<table><tr><th>#</th><th>Защитник</th><th style="text-align:right;">Волн</th></tr>`;
+            sorted.forEach((r,i) => {
+                const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `#${i+1}`;
+                const cls = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+                html += `<tr><td class="rank ${cls}">${medal}</td><td>${escapeHtml(r.name)}</td><td style="text-align:right;font-weight:700;color:var(--gradient-start);">${r.score}</td></tr>`;
+            });
+            html += `</table>`;
+            container.innerHTML = html;
+        }
+
+        function escapeHtml(t) { const d=document.createElement('div'); d.textContent=t; return d.innerHTML; }
+
+        async function saveRecord(name, score) {
+            try {
+                const res = await fetch(API_URL, { headers: { 'X-Master-Key': MASTER_KEY } });
+                const data = await res.json();
+                let records = data.record[TD_KEY] || [];
+                const idx = records.findIndex(r => r.name === name);
+                if (idx !== -1) { if (score > records[idx].score) records[idx].score = score; }
+                else records.push({ name, score });
+                const updateData = { ...data.record, [TD_KEY]: records };
+                const upd = await fetch(API_URL, { method:'PUT', headers:{'Content-Type':'application/json','X-Master-Key':MASTER_KEY}, body:JSON.stringify(updateData) });
+                if (upd.ok) { loadLeaderboard(); return true; }
+                return false;
+            } catch(e) { return false; }
+        }
+
+        // ===== ИГРА =====
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const TILE = 32;
+        const COLS = 20;
+        const ROWS = 15;
+
+        const PATH = [
+            {x:0,y:7},{x:1,y:7},{x:2,y:7},{x:3,y:7},{x:4,y:7},
+            {x:4,y:6},{x:4,y:5},{x:4,y:4},{x:4,y:3},
+            {x:5,y:3},{x:6,y:3},{x:7,y:3},{x:8,y:3},{x:9,y:3},
+            {x:9,y:4},{x:9,y:5},{x:9,y:6},{x:9,y:7},{x:9,y:8},{x:9,y:9},{x:9,y:10},
+            {x:10,y:10},{x:11,y:10},{x:12,y:10},{x:13,y:10},
+            {x:13,y:9},{x:13,y:8},{x:13,y:7},{x:13,y:6},{x:13,y:5},{x:13,y:4},{x:13,y:3},
+            {x:14,y:3},{x:15,y:3},{x:16,y:3},{x:17,y:3},
+            {x:17,y:4},{x:17,y:5},{x:17,y:6},{x:17,y:7},{x:17,y:8},{x:17,y:9},{x:17,y:10},{x:17,y:11},
+            {x:18,y:11},{x:19,y:11}
+        ];
+        const pathSet = new Set(PATH.map(p => `${p.x},${p.y}`));
+
+        // ===== БАШНИ =====
+        const TOWER_TYPES = {
+            archer: { name: 'Лучник', cost: 60, damage: 20, range: 110, cooldown: 0.45, color: '#8B5A2B', projectile: '#D2B48C' },
+            cannon: { name: 'Пушка', cost: 110, damage: 35, range: 90, cooldown: 1.1, color: '#4B5563', projectile: '#1F2937', aoe: 45 },
+            fire:   { name: 'Огнемёт', cost: 140, damage: 10, range: 95, cooldown: 0.22, color: '#DC2626', projectile: '#F97316', burn: 6 },
+            ice:    { name: 'Ледяная', cost: 120, damage: 8, range: 100, cooldown: 0.7, color: '#0EA5E9', projectile: '#7DD3FC', slow: 0.4 },
+            mage:   { name: 'Маг', cost: 170, damage: 28, range: 110, cooldown: 0.8, color: '#8B5CF6', projectile: '#A78BFA' },
+            tesla:  { name: 'Тесла', cost: 200, damage: 15, range: 95, cooldown: 0.55, color: '#EAB308', projectile: '#FDE047', chain: 3 },
+            sniper: { name: 'Снайпер', cost: 250, damage: 60, range: 170, cooldown: 2.0, color: '#1F2937', projectile: '#94A3B8' }
+        };
+
+        // ===== МОБЫ (первая волна — проходима) =====
+        const MOB_TYPES = {
+            zombie:  { hp: 80, speed: 0.85, reward: 10, color: '#3F6212', emoji: '🧟', size: 0.7 },
+            skeleton:{ hp: 70, speed: 1.2, reward: 12, color: '#E5E7EB', emoji: '💀', size: 0.65 },
+            creeper: { hp: 90, speed: 1.4, reward: 16, color: '#16A34A', emoji: '💥', size: 0.7 },
+            spider:  { hp: 55, speed: 1.7, reward: 10, color: '#1F2937', emoji: '🕷️', size: 0.55 },
+            enderman:{ hp: 160, speed: 1.1, reward: 24, color: '#1F2937', emoji: '👾', size: 0.8 },
+            witch:   { hp: 90, speed: 0.85, reward: 20, color: '#4A044E', emoji: '🧙', size: 0.7 },
+            blaze:   { hp: 60, speed: 1.3, reward: 22, color: '#FACC15', emoji: '🔥', size: 0.6 },
+            piglin:  { hp: 110, speed: 1.0, reward: 15, color: '#92400E', emoji: '🐷', size: 0.7 },
+            boss:    { hp: 600, speed: 0.5, reward: 70, color: '#7F1D1D', emoji: '👑', size: 1.1 }
+        };
+
+        let money = 120;
+        let lives = 15;
+        let wave = 0;
+        let selectedType = 'archer';
+        let sellMode = false;
+        let upgradeMode = false;
+        let towers = [];
+        let enemies = [];
+        let projectiles = [];
+        let particles = [];
+        let waveInProgress = false;
+        let spawnQueue = [];
+        let spawnTimer = 0;
+        let gameOver = false;
+        let lastTime = 0;
+        let isEndingWave = false;
+
+        function updateUI() {
+            document.getElementById('money').textContent = money;
+            document.getElementById('lives').textContent = lives;
+            document.getElementById('wave').textContent = wave;
+            document.getElementById('startBtn').disabled = waveInProgress || gameOver;
+        }
+
+        function updateMessage(text, type = 'info') {
+            const el = document.getElementById('message');
+            if (text) { el.textContent = text; el.className = 'message ' + type; }
+            else if (sellMode) { el.textContent = '🔄 Режим продажи: кликни по башне'; el.className = 'message danger'; }
+            else if (upgradeMode) { el.textContent = '⬆ Режим улучшения: кликни по башне'; el.className = 'message warning'; }
+            else { el.textContent = 'Выбери башню и кликни по карте'; el.className = 'message info'; }
+        }
+
+        function selectTower(type) {
+            selectedType = type;
+            sellMode = false;
+            upgradeMode = false;
+            document.querySelectorAll('.tower-btn').forEach(b => b.classList.remove('selected'));
+            document.querySelector(`[data-type="${type}"]`).classList.add('selected');
+            updateMessage();
+        }
+
+        function canPlace(x, y) {
+            if (pathSet.has(`${x},${y}`)) return false;
+            if (towers.some(t => t.x === x && t.y === y)) return false;
+            return true;
+        }
+
+        canvas.addEventListener('click', (e) => {
+            if (gameOver) return;
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            const mx = Math.floor((e.clientX - rect.left) * scaleX / TILE);
+            const my = Math.floor((e.clientY - rect.top) * scaleY / TILE);
+
+            if (sellMode) {
+                const idx = towers.findIndex(t => t.x === mx && t.y === my);
+                if (idx !== -1) {
+                    const cost = TOWER_TYPES[towers[idx].type].cost;
+                    const refund = Math.floor(cost * 0.5);
+                    money += refund;
+                    towers.splice(idx, 1);
+                    updateUI();
+                    updateMessage(`💰 Башня продана за ${refund}`, 'success');
+                }
+                return;
+            }
+
+            if (upgradeMode) {
+                const t = towers.find(t => t.x === mx && t.y === my);
+                if (t) {
+                    const cost = Math.floor(TOWER_TYPES[t.type].cost * 0.8);
+                    if (money < cost) { updateMessage('Не хватает ресурсов!', 'danger'); return; }
+                    if (t.level >= 5) { updateMessage('Максимальный уровень!', 'danger'); return; }
+                    money -= cost;
+                    t.level++;
+                    t.damage = Math.floor(TOWER_TYPES[t.type].damage * (1 + t.level * 0.15));
+                    t.range = Math.floor(TOWER_TYPES[t.type].range * (1 + t.level * 0.03));
+                    updateUI();
+                    updateMessage(`⬆ Башня улучшена до ${t.level} уровня!`, 'success');
+                }
+                return;
+            }
+
+            if (!canPlace(mx, my)) { updateMessage('Сюда нельзя ставить!', 'danger'); return; }
+            const t = TOWER_TYPES[selectedType];
+            if (money < t.cost) { updateMessage('Не хватает ресурсов!', 'danger'); return; }
+
+            money -= t.cost;
+            towers.push({
+                x: mx, y: my, type: selectedType,
+                cooldown: 0, level: 1,
+                damage: t.damage,
+                range: t.range
+            });
+            updateUI();
+            updateMessage(`Поставлена: ${t.name}`, 'success');
+        });
+
+        // ===== ВОЛНЫ =====
+        function startWave() {
+            if (waveInProgress || gameOver) return;
+            wave++;
+            waveInProgress = true;
+            isEndingWave = false;
+            spawnQueue = [];
+
+            const count = 5 + Math.floor(wave * 3.5);
+            for (let i = 0; i < count; i++) {
+                let type = 'zombie';
+                const r = Math.random();
+                if (wave >= 3 && r < 0.20) type = 'skeleton';
+                if (wave >= 4 && r < 0.18) type = 'creeper';
+                if (wave >= 5 && r < 0.15) type = 'spider';
+                if (wave >= 6 && r < 0.12) type = 'enderman';
+                if (wave >= 7 && r < 0.10) type = 'witch';
+                if (wave >= 8 && r < 0.10) type = 'blaze';
+                if (wave >= 9 && r < 0.12) type = 'piglin';
+                spawnQueue.push(type);
+            }
+            if (wave % 4 === 0) {
+                spawnQueue.push('boss');
+                if (wave % 8 === 0) spawnQueue.push('boss');
+            }
+
+            spawnTimer = 0.7;
+            updateUI();
+            updateMessage(`⚔️ Волна ${wave} началась!`, 'success');
+        }
+
+        function spawnEnemy(type) {
+            const stats = MOB_TYPES[type];
+            const hpMul = 1 + Math.pow(wave, 1.15) * 0.035;
+            enemies.push({
+                type,
+                pathIndex: 0,
+                progress: 0,
+                x: PATH[0].x * TILE + TILE/2,
+                y: PATH[0].y * TILE + TILE/2,
+                hp: Math.floor(stats.hp * hpMul),
+                maxHp: Math.floor(stats.hp * hpMul),
+                speed: stats.speed * (1 + wave * 0.006),
+                reward: stats.reward + Math.floor(wave * 0.3),
+                color: stats.color,
+                emoji: stats.emoji,
+                size: stats.size,
+                slowTimer: 0,
+                burnTimer: 0,
+                burnDps: 0
+            });
+        }
+
+        function killEnemy(e) {
+            money += e.reward;
+            for (let k = 0; k < 6; k++) {
+                particles.push({
+                    x: e.x, y: e.y,
+                    vx: (Math.random() - 0.5) * 80,
+                    vy: (Math.random() - 0.5) * 80,
+                    life: 0.4 + Math.random() * 0.3,
+                    color: e.color
+                });
+            }
+            updateUI();
+        }
+
+        function checkWaveComplete() {
+            if (!waveInProgress || isEndingWave) return;
+            if (spawnQueue.length === 0 && enemies.length === 0) {
+                isEndingWave = true;
+                waveInProgress = false;
+                const bonus = 15 + wave * 8;
+                money += bonus;
+                updateUI();
+                updateMessage(`✅ Волна ${wave} пройдена! +${bonus} ресурсов`, 'success');
+                if (wave >= 20) endGame(true);
+            }
+        }
+
+        function update(dt) {
+            if (gameOver) return;
+
+            if (waveInProgress) {
+                spawnTimer -= dt;
+                if (spawnTimer <= 0 && spawnQueue.length > 0) {
+                    spawnEnemy(spawnQueue.shift());
+                    spawnTimer = Math.max(0.5, 0.9 - wave * 0.02);
+                }
+                checkWaveComplete();
+            }
+
+            for (let i = enemies.length - 1; i >= 0; i--) {
+                const e = enemies[i];
+                if (e.hp <= 0) {
+                    killEnemy(e);
+                    enemies.splice(i, 1);
+                    checkWaveComplete();
+                    continue;
+                }
+
+                if (e.burnTimer > 0) {
+                    e.burnTimer -= dt;
+                    e.hp -= e.burnDps * dt;
+                    if (e.hp <= 0) {
+                        killEnemy(e);
+                        enemies.splice(i, 1);
+                        checkWaveComplete();
+                        continue;
+                    }
+                }
+                if (e.slowTimer > 0) e.slowTimer -= dt;
+
+                const speedMul = e.slowTimer > 0 ? 0.4 : 1;
+                e.progress += e.speed * speedMul * dt * 1.8;
+
+                while (e.progress >= 1 && e.pathIndex < PATH.length - 1) {
+                    e.progress -= 1;
+                    e.pathIndex++;
+                }
+
+                if (e.pathIndex >= PATH.length - 1 && e.progress >= 1) {
+                    if (e.hp > 0) {
+                        lives -= e.type === 'boss' ? 4 : 1;
+                        updateUI();
+                        if (lives <= 0) endGame(false);
+                    }
+                    enemies.splice(i, 1);
+                    checkWaveComplete();
+                    continue;
+                }
+
+                const p1 = PATH[e.pathIndex];
+                const p2 = PATH[Math.min(e.pathIndex + 1, PATH.length - 1)];
+                e.x = (p1.x + (p2.x - p1.x) * e.progress) * TILE + TILE/2;
+                e.y = (p1.y + (p2.y - p1.y) * e.progress) * TILE + TILE/2;
+            }
+
+            towers.forEach(t => {
+                t.cooldown -= dt;
+                if (t.cooldown > 0) return;
+
+                const type = TOWER_TYPES[t.type];
+                let target = null;
+                let minDist = t.range;
+
+                enemies.forEach(e => {
+                    const dx = e.x - (t.x * TILE + TILE/2);
+                    const dy = e.y - (t.y * TILE + TILE/2);
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < minDist) {
+                        minDist = dist;
+                        target = e;
+                    }
+                });
+
+                if (target) {
+                    t.cooldown = type.cooldown;
+                    const dmg = t.damage || type.damage;
+                    projectiles.push({
+                        x: t.x * TILE + TILE/2,
+                        y: t.y * TILE + TILE/2,
+                        target: target,
+                        type: t.type,
+                        speed: 320,
+                        damage: dmg,
+                        aoe: type.aoe || 0,
+                        burn: type.burn || 0,
+                        slow: type.slow || 0,
+                        chain: type.chain || 0
+                    });
+                }
+            });
+
+            for (let i = projectiles.length - 1; i >= 0; i--) {
+                const p = projectiles[i];
+                if (!p.target || !enemies.includes(p.target) || p.target.hp <= 0) {
+                    projectiles.splice(i, 1);
+                    continue;
+                }
+                const dx = p.target.x - p.x;
+                const dy = p.target.y - p.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 14) {
+                    if (p.aoe > 0) {
+                        enemies.forEach(e => {
+                            const ddx = e.x - p.x;
+                            const ddy = e.y - p.y;
+                            if (Math.sqrt(ddx * ddx + ddy * ddy) < p.aoe) {
+                                e.hp -= p.damage;
+                            }
+                        });
+                    } else if (p.chain > 0) {
+                        let targets = [p.target];
+                        let hitList = [p.target];
+                        for (let c = 0; c < p.chain - 1; c++) {
+                            let nearest = null;
+                            let nearDist = 120;
+                            enemies.forEach(e => {
+                                if (hitList.includes(e)) return;
+                                const ddx = e.x - targets[targets.length-1].x;
+                                const ddy = e.y - targets[targets.length-1].y;
+                                const d = Math.sqrt(ddx*ddx + ddy*ddy);
+                                if (d < nearDist) { nearDist = d; nearest = e; }
+                            });
+                            if (nearest) { targets.push(nearest); hitList.push(nearest); }
+                        }
+                        targets.forEach(e => e.hp -= p.damage * 0.7);
+                    } else {
+                        p.target.hp -= p.damage;
+                        if (p.burn) { p.target.burnTimer = 2.5; p.target.burnDps = p.burn; }
+                        if (p.slow) { p.target.slowTimer = 2.2; }
+                    }
+                    projectiles.splice(i, 1);
+                    continue;
+                }
+                p.x += (dx / dist) * p.speed * dt;
+                p.y += (dy / dist) * p.speed * dt;
+            }
+
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const pt = particles[i];
+                pt.life -= dt;
+                pt.x += pt.vx * dt;
+                pt.y += pt.vy * dt;
+                if (pt.life <= 0) particles.splice(i, 1);
+            }
+        }
+
+        function draw() {
+            ctx.fillStyle = '#5B8C3E';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            for (let y = 0; y < ROWS; y++) {
+                for (let x = 0; x < COLS; x++) {
+                    const isPath = pathSet.has(`${x},${y}`);
+                    if (isPath) {
+                        ctx.fillStyle = (x + y) % 2 === 0 ? '#6B7280' : '#4B5563';
+                        ctx.fillRect(x * TILE, y * TILE, TILE, TILE);
+                        ctx.strokeStyle = '#374151';
+                        ctx.lineWidth = 1;
+                        ctx.strokeRect(x * TILE + 0.5, y * TILE + 0.5, TILE - 1, TILE - 1);
+                    } else {
+                        ctx.fillStyle = (x + y) % 2 === 0 ? '#4A7C2F' : '#3D6B28';
+                        ctx.fillRect(x * TILE, y * TILE, TILE, TILE);
+                    }
+                }
+            }
+
+            towers.forEach(t => {
+                const type = TOWER_TYPES[t.type];
+                const cx = t.x * TILE + TILE/2;
+                const cy = t.y * TILE + TILE/2;
+
+                ctx.strokeStyle = '#22c55e';
+                ctx.lineWidth = t.level >= 3 ? 2 : 1;
+                ctx.strokeRect(t.x * TILE + 1, t.y * TILE + 1, TILE - 2, TILE - 2);
+
+                ctx.fillStyle = type.color;
+                ctx.fillRect(t.x * TILE + 2, t.y * TILE + 2, TILE - 4, TILE - 4);
+                ctx.fillStyle = 'rgba(255,255,255,0.2)';
+                ctx.fillRect(t.x * TILE + 2, t.y * TILE + 2, TILE - 4, 6);
+
+                const icons = { archer: '🏹', cannon: '💣', fire: '🔥', ice: '❄️', mage: '🔮', tesla: '⚡', sniper: '🎯' };
+                ctx.font = '18px serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(icons[t.type], cx, cy + 1);
+
+                if (t.level > 1) {
+                    ctx.fillStyle = '#ffd700';
+                    ctx.font = '10px sans-serif';
+                    ctx.fillText(`⭐${t.level}`, cx, cy + 18);
+                }
+            });
+
+            enemies.forEach(e => {
+                if (e.hp <= 0) return;
+                const s = e.size * TILE * 0.8;
+                ctx.font = `${s}px serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(e.emoji, e.x, e.y + 2);
+
+                const barW = s;
+                const barH = 5;
+                const hpRatio = Math.max(0, e.hp / e.maxHp);
+                ctx.fillStyle = '#1F2937';
+                ctx.fillRect(e.x - barW/2, e.y - s/2 - 10, barW, barH);
+                ctx.fillStyle = hpRatio > 0.4 ? '#22C55E' : '#EF4444';
+                ctx.fillRect(e.x - barW/2, e.y - s/2 - 10, barW * hpRatio, barH);
+
+                if (e.burnTimer > 0) {
+                    ctx.fillStyle = 'rgba(249, 115, 22, 0.4)';
+                    ctx.beginPath();
+                    ctx.arc(e.x, e.y, s/2 + 3, 0, Math.PI*2);
+                    ctx.fill();
+                }
+                if (e.slowTimer > 0) {
+                    ctx.strokeStyle = 'rgba(14, 165, 233, 0.6)';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.arc(e.x, e.y, s/2 + 4, 0, Math.PI*2);
+                    ctx.stroke();
+                }
+            });
+
+            projectiles.forEach(p => {
+                const type = TOWER_TYPES[p.type];
+                ctx.fillStyle = type.projectile;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.aoe ? 7 : 5, 0, Math.PI*2);
+                ctx.fill();
+                if (p.type === 'fire') {
+                    ctx.fillStyle = 'rgba(249, 115, 22, 0.3)';
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 12, 0, Math.PI*2);
+                    ctx.fill();
+                }
+                if (p.type === 'tesla') {
+                    ctx.strokeStyle = '#FDE047';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 10, 0, Math.PI*2);
+                    ctx.stroke();
+                }
+            });
+
+            particles.forEach(pt => {
+                ctx.globalAlpha = pt.life * 2;
+                ctx.fillStyle = pt.color;
+                ctx.fillRect(pt.x - 3, pt.y - 3, 6, 6);
+                ctx.globalAlpha = 1;
+            });
+
+            const last = PATH[PATH.length - 1];
+            ctx.fillStyle = '#78350F';
+            ctx.fillRect(last.x * TILE + 2, last.y * TILE + 2, TILE - 4, TILE - 4);
+            ctx.font = '16px serif';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#FDE68A';
+            ctx.fillText('🏠', last.x * TILE + TILE/2, last.y * TILE + TILE/2 + 2);
+        }
+
+        function endGame(win) {
+            gameOver = true;
+            const overlay = document.getElementById('overlay');
+            document.getElementById('overlayTitle').textContent = win ? '🏆 Победа!' : '💀 Поражение';
+            document.getElementById('overlayText').textContent = win
+                ? `Ты защитил деревню на ${wave} волнах!`
+                : `Волна ${wave}. Попробуй ещё раз!`;
+            overlay.classList.add('show');
+
+            if (wave > 0) {
+                if (!playerName) {
+                    const nameInput = prompt(`🏆 Ты прошёл ${wave} волн! Введите имя:`, 'Защитник');
+                    if (nameInput && nameInput.trim() !== '') {
+                        playerName = nameInput.trim();
+                        localStorage.setItem('td_player_name', playerName);
+                    } else {
+                        playerName = 'Защитник';
+                        localStorage.setItem('td_player_name', playerName);
+                    }
+                }
+                saveRecord(playerName, wave);
+            }
+        }
+
+        function restartGame() {
+            money = 120;
+            lives = 15;
+            wave = 0;
+            towers = [];
+            enemies = [];
+            projectiles = [];
+            particles = [];
+            waveInProgress = false;
+            spawnQueue = [];
+            gameOver = false;
+            sellMode = false;
+            upgradeMode = false;
+            isEndingWave = false;
+            document.getElementById('overlay').classList.remove('show');
+            updateUI();
+            updateMessage();
+        }
+
+        function loop(timestamp) {
+            const dt = Math.min((timestamp - lastTime) / 1000, 0.05);
+            lastTime = timestamp;
+            update(dt);
+            draw();
+            requestAnimationFrame(loop);
+        }
+
+        function resizeCanvas() {
+            const maxW = Math.min(640, window.innerWidth - 40);
+            const ratio = 480 / 640;
+            canvas.style.width = maxW + 'px';
+            canvas.style.height = (maxW * ratio) + 'px';
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        updateUI();
+        loadLeaderboard();
+        requestAnimationFrame(loop);
+
+        console.log('⛏ Minecraft Tower Defense (сбалансированная) загружена!');
+        console.log('💰 Стартовые деньги: 120');
+        console.log('🧟 Первая волна: 5 зомби по 80 HP');
+    </script>
+</body>
+</html>
